@@ -19,7 +19,9 @@ export const Container = (props) => {
         if (display) {
             output += "d-none d-" + display + "-"
             switch (container) {
+                case 'col-th':
                 case 'col':
+                case 'col-td':
                     output += "table-cell"
                     break;
                 case 'row':
@@ -43,6 +45,7 @@ export const Container = (props) => {
             )
             break;
         case 'col':
+        case 'col-td':
             output = (
                 <td 
                     className={`text-${position ? position : "end"} ${get_display()} align-middle`} 
@@ -50,6 +53,16 @@ export const Container = (props) => {
                 >
                     {input}
                 </td>
+            )
+            break;
+        case 'col-th':
+            output = (
+                <th 
+                    className={`text-${position ? position : "end"} ${get_display()} align-middle`} 
+                    colSpan={colspan} 
+                >
+                    {input}
+                </th>
             )
             break;
         case 'p':

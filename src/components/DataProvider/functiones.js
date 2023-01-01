@@ -81,4 +81,23 @@ export const get_icon = (icon_array, pos=null) => {
     } else {
         return null
     }
-}
+};
+
+export const get_colspan = (headers=null, buttons=null) => {
+    var colspan = 0
+    if (headers) {
+        for (var i = 0; i < headers.length; i++) {
+            colspan += 1
+        }
+    }
+    if (buttons) {
+        for (var i = 0; i < buttons.length; i++) {
+            colspan += 1
+        }
+    }
+    if (colspan == 0){
+        colspan = 1
+    }
+
+    return colspan;
+};

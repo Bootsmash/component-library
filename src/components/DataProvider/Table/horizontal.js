@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { generate_prefix, get_value, get_display, get_icon } from '../functiones';
+import { generate_prefix, get_value, get_display, get_icon, get_colspan } from '../functiones';
+import { get_sum, get_format } from './sum';
 import { FormatProvider } from '../../FormatProvider/index';
 import { TableButtons } from './buttons';
 import { BsPlusLg } from 'react-icons/bs';
@@ -26,7 +27,7 @@ const Horizontal = (props) => {
                     { headers.map((head, h) =>
                         <>
                         <th key={`${head_prefix}-${head.name}`} 
-                            className={`text-${head['pos'] || 'start'} ${get_display(head.display || null, 'col')} align-middle`}
+                            className={`text-${head.pos || 'start'} ${get_display(head.display || null, 'col')} align-middle`}
                         >   
                             {get_icon(head.icon || null, 'start')} {head.name} {get_icon(head.icon || null, 'end')}
                         </th>
@@ -46,7 +47,6 @@ const Horizontal = (props) => {
                                 format={head.format || null} 
                                 ct="col"
                                 pos={head.pos || 'start'} 
-                                colspan={head.colspan}
                                 display={head.display || null}
                                 fixes={head.fixes || null}
                             />
@@ -58,9 +58,39 @@ const Horizontal = (props) => {
                     </tr>
                     </>
                 )}
+                { options.sum ? (
+                    <tr className={`table-${options.sum.variant}`}>
+                        { headers.map((head, h) =>
+                            <>
+                            { h == 0 ? (
+                                <th>{options.sum.name}</th>
+                            ) : (
+                                <>
+                                { head.sum ? (
+                                    <FormatProvider
+                                        value={get_sum(data, head)}
+                                        format={get_format(head)} 
+                                        ct="col-th"
+                                        pos={head.pos || 'start'} 
+                                        colspan={head.colspan}
+                                        display={head.display || null}
+                                        fixes={head.fixes || null}
+                                    />
+                                ) : (
+                                    <td></td>
+                                )}
+                                </>
+                            )}
+                            </>
+                        )}
+                        { options.buttons.map((btn, b) =>
+                            <td></td>
+                        )}
+                    </tr>
+                ) : ""}
                 { options.add ? (
                     <tr>
-                        <td colSpan={headers.length + options.buttons.length}>
+                        <td colSpan={get_colspan(headers, options.buttons)}>
                             <Button 
                                 variant='success'
                                 className='w-100'
@@ -72,11 +102,11 @@ const Horizontal = (props) => {
                         </td>
                     </tr>
                 ) : ""}
-                { options.load ? (
+                { options.load.function ? (
                     <>
                     { !options.load.state ? (
                         <tr>
-                            <td colSpan={headers.length + options.buttons.length}>
+                            <td colSpan={get_colspan(headers, options.buttons)}>
                                 <Button
                                     variant='primary'
                                     className='w-100'
@@ -88,7 +118,7 @@ const Horizontal = (props) => {
                         </tr>
                     ) : (
                         <tr>
-                            <td colSpan={headers.length + options.buttons.length}>
+                            <td colSpan={get_colspan(headers, options.buttons)}>
                                 <Button
                                     variant='primary'
                                     className='w-100'

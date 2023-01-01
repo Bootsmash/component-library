@@ -16,7 +16,7 @@ export const format_input = (format, input, fixes=null) => {
     switch(format) {
         case 'date':
             // Format Input as Date
-            // dd.mm.YYYYY
+            // dd.mm.YYYY
             return new Intl.DateTimeFormat('de-DE', {
                 year: 'numeric', 
                 month: '2-digit',
@@ -40,15 +40,15 @@ export const format_input = (format, input, fixes=null) => {
             var diff = new Date(old - now);
 
             if (diff.getMinutes() < 1 && diff.getHours() < 1 && diff.getDay() < 1) {
-                return (fixes.now + "")
+                return (fixes?.now + "now")
             } else if (diff.getMinutes() < 60 && diff.getHours() < 1 && diff.getDay() < 1){
-                return (fixes.start + "") + " " + diff.getMinutes() + " Minuten"
+                return (fixes?.start + "") + " " + diff.getMinutes() + " Minuten"
             } else if (diff.getHours() < 24 && diff.getUTCDate() < 1) {
-                return (fixes.start + "") + " " + diff.getHours() + " Stunden"
+                return (fixes?.start + "") + " " + diff.getHours() + " Stunden"
             } else if (diff.getUTCDate() - 1 < 6 &&  diff.getMonth < 1 && diff.getUTCFullYear) {
-                return (fixes.start + "") + " " + diff.getUTCDate() - 1 + " Tagen"
+                return (fixes?.start + "") + " " + diff.getUTCDate() - 1 + " Tagen"
             } else {
-                return (fixes.final || "") + " " + new Intl.DateTimeFormat('de-DE', {
+                return (fixes?.final || "") + " " + new Intl.DateTimeFormat('de-DE', {
                     year: 'numeric', 
                     month: '2-digit',
                     day: '2-digit'
