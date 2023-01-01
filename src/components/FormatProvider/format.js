@@ -7,7 +7,7 @@ import {
     FORMAT_QUADRATMETER,
     FORMAT_KUBIKMETER
 } from './types';
-export const format_input = (format, input, fixes=null) => {
+export const format_input = (format, input, fixes=null, suffix=null) => {
 
     if (!input) {
         return <BsDash />
@@ -32,91 +32,60 @@ export const format_input = (format, input, fixes=null) => {
                 day: '2-digit',
                 hour: '2-digit',
                 minute: '2-digit',
-            }).format(new Date(input)) + " Uhr";
+            }).format(new Date(input)) + (" " + suffix || "");
         
         case 'date-to-now':
             var old = new Date(input)
-            var now = Date.now()
-            var diff = new Date(old - now);
+            var now = new Date();
 
-            if (diff.getMinutes() < 1 && diff.getHours() < 1 && diff.getDay() < 1) {
-                return (fixes?.now + "now")
-            } else if (diff.getMinutes() < 60 && diff.getHours() < 1 && diff.getDay() < 1){
-                return (fixes?.start + "") + " " + diff.getMinutes() + " Minuten"
-            } else if (diff.getHours() < 24 && diff.getUTCDate() < 1) {
-                return (fixes?.start + "") + " " + diff.getHours() + " Stunden"
-            } else if (diff.getUTCDate() - 1 < 6 &&  diff.getMonth < 1 && diff.getUTCFullYear) {
-                return (fixes?.start + "") + " " + diff.getUTCDate() - 1 + " Tagen"
-            } else {
-                return (fixes?.final || "") + " " + new Intl.DateTimeFormat('de-DE', {
-                    year: 'numeric', 
-                    month: '2-digit',
-                    day: '2-digit'
-                }).format(new Date(input));
+            var diff = now.getTime() - old.getTime()
+
+            var diff_days = diff / (1000 * 60 * 60 * 24)
+
+            if (Math.round(diff_days) < 1 && (fixes?.hours || fixes?.minutes || fixes?.now)){
+
+                var diff_hours = diff / (1000 * 60 * 60)
+                if (diff_hours < 24 && (fixes?.hours || fixes?.minutes || fixes?.now)) {
+
+                    var diff_minutes = diff / (1000 * 60)
+
+                    if (diff_minutes < 1 && fixes?.now) {
+                        return fixes.now
+
+                    } else if(diff_minutes < 60 && fixes?.minutes) {
+                        return (fixes?.default + " " || "") + Math.round(diff_minutes) + " " + fixes.minutes
+
+                    } else if (fixes?.hours) {
+                        return (fixes?.default + " "|| "") + Math.round(diff_hours) + " " + fixes.hours
+                    }
+                }
+            } else if (diff_days < 7 && fixes?.days) {
+                return (fixes?.default + " " || "") + Math.round(diff_days) + " " + fixes.days
             }
-        
-        case 'kwh':
-            // Format Input as Kwh Number
-            // 1.000,00 kwh
-            return new Intl.NumberFormat('de-DE', {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-                unitDisplay: 'long',
-            }).format(input) + FORMAT_KWH
-        
-        case 'liter':
-            // Format Input as liter Number
-            // 1.000,00 l
-            return new Intl.NumberFormat('de-DE', {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-                unitDisplay: 'long',
-            }).format(input) + FORMAT_LITER
-        
-        case 'price':
-            // Format Input as price
-            // 1.000,00 €
-            return new Intl.NumberFormat('de-DE', {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-                unitDisplay: 'long',
-            }).format(input) + FORMAT_PRICE
-        
-        case 'meter':
-            // Format Input as meter
-            // 1.000,00 m
-            return new Intl.NumberFormat('de-DE', {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-                unitDisplay: 'long',
-            }).format(input) + FORMAT_METER
 
-        case 'meter-square':
-            // Format Input as squaremeter
-            // 1.000,00 m2
-            return new Intl.NumberFormat('de-DE', {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-                unitDisplay: 'long',
-            }).format(input) + FORMAT_QUADRATMETER
-        
-        case 'meter-cubic':
-            // Format Input as cubicmeter
-            // (1.000,00 m3)
-            return new Intl.NumberFormat('de-DE', {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-                unitDisplay: 'long',
-            }).format(input) + FORMAT_KUBIKMETER
+            if (diff_days < 28 && fixes?.weeks) {
+                return (fixes?.default + " " || "") + Math.round(diff_days / 7) + " " + fixes.weeks
+            }
+
+            return (fixes?.final || "") + " " + new Intl.DateTimeFormat('de-DE', {
+                year: 'numeric', 
+                month: '2-digit',
+                day: '2-digit'
+            }).format(new Date(input));
         
         case 'number':
             // Format Input as Number
             // 1.000,00
-            return new Intl.NumberFormat('de-DE', {
+            var output =  new Intl.NumberFormat('de-DE', {
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2,
                 unitDisplay: 'long',
             }).format(input)
+            if (suffix) {
+                output += " " + suffix
+            }
+
+            return output;
 
         case 'number-round':
             // Format Input as Number

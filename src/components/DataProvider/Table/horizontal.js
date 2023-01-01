@@ -49,6 +49,7 @@ const Horizontal = (props) => {
                                 pos={head.pos || 'start'} 
                                 display={head.display || null}
                                 fixes={head.fixes || null}
+                                suffix={head.suffix || null}
                             />
                             </>
                         )}

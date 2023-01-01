@@ -34,17 +34,18 @@ headers = {
 ```
 
 Possible arguments for headers
-| arg     | type   | desc                                              | More Information       |
-| ------- | :------: | ------------------------------------------------- | :----------------------: |
-| name    | string | Title of column or row                           |                        |
-| value   | string | Set the value                                     | [more](#Headers#Value)             |
-| format  | string | Describes the format of the value                 | [more](#FormatProvider#Formats)            |
-| pos     | string | `start`,`center`, `end` centered text             |                        |
-| display | string | bootstrap display (values: `sm`, `md`, `lg`, `xl`, `xxl`) |                        |
-| icon    | array  |                                                   | [more](#Icons)              |
-| space   | sting  |                                                   | [more](#Headers#Value)             |
-| fixes   | array  |                                                   | [more](#FormatProvider#Formats#date-to-now) |
-| sum     | string | Set the type of calulating the sum of the row     | [more](#DataProvider#Sum)               |
+| arg     |  type  | desc                                                      |              More Information               |
+| ------- |:------:| --------------------------------------------------------- |:-------------------------------------------:|
+| name    | string | Title of column or row                                    |                                             |
+| value   | string | Set the value                                             |           [more](#Headers#Value)            |
+| format  | string | Describes the format of the value                         |       [more](#FormatProvider#Formats)       |
+| pos     | string | `start`,`center`, `end` centered text                     |                                             |
+| display | string | bootstrap display (values: `sm`, `md`, `lg`, `xl`, `xxl`) |                                             |
+| icon    | array  |                                                           |               [more](#Icons)                |
+| space   | sting  |                                                           |           [more](#Headers#Value)            |
+| fixes   | array  |                                                           | [more](#FormatProvider#Formats#date-to-now) |
+| sum     | string | Set the type of calulating the sum of the row             |          [more](#DataProvider#Sum)          |
+| suffix  | string |                                                           |  [more](#FormatProvider#Usage)                                           |
 
 #### Value
 | value     | desc                                                                         |
@@ -95,15 +96,16 @@ Now you can implement the DataProvider to our Component
 />
 ```
 
-|    arg    |                   values                   | desc                                                                                              | required |
-|:---------:|:------------------------------------------:| ------------------------------------------------------------------------------------------------- |:--------:|
-|  `value`  |                                            | string or number to format                                                                        |   yes    |
-| `format`  |    [formats](#FormatProvider#Formats)     | the format to format the `value`                                                                  |    no    |
+|    arg    |                  values                  | desc                                                                                              | required |
+|:---------:|:----------------------------------------:| ------------------------------------------------------------------------------------------------- |:--------:|
+|  `value`  |                                          | string or number to format                                                                        |   yes    |
+| `format`  |    [formats](#FormatProvider#Formats)    | the format to format the `value`                                                                  |    no    |
 |   `ct`    | [containers](#FormatProvider#Containers) | the container to return                                                                           |    no    |
-| `colspan` |                                            | The coloumn length if you use the `row` or `col` containers                                       |    no    |
-|  `title`  |                                            | The title of the table row if you use the `row` container                                         |    no    |
-| `display` |       `sm`, `md`, `lg`, `xl`, `xxl`        | Shown on screen size bigger than the given value                                                  |    no    |
+| `colspan` |                                          | The coloumn length if you use the `row` or `col` containers                                       |    no    |
+|  `title`  |                                          | The title of the table row if you use the `row` container                                         |    no    |
+| `display` |      `sm`, `md`, `lg`, `xl`, `xxl`       | Shown on screen size bigger than the given value                                                  |    no    |
 |  `fixes`  |   [fixes](#FormatProvider#date-to-now)   | define what should be printet in front of the date difference if you use the `date-to-now` format |    no    |
+| `suffix`  |                                          | The string will be returned behind the `value` Example `1.000 m` if `suffix="m"`                                                                                                |          |
 
 ### Formats
 | value          | result                                  |
@@ -111,12 +113,6 @@ Now you can implement the DataProvider to our Component
 | `date`         | dd.mm.YYYY                              |
 | `date-time`    | dd.mm.YYYY HH:ii Uhr                    |
 | `date-to-now`  | (depends on difference)                 |
-| `kwh`          | 1.000,00 kwh                            |
-| `liter`        | 1.000,00 l                              |
-| `price`        | 1.000,00 €                              |
-| `meter`        | 1.000,00 m<sup>2</sup>                  |
-| `meter-square` | 1.000,00 m<sup>2</sup>                  |
-| `meter-cubic`  | 1.000,00 m<sup>3</sup>                  |
 | `number`       | 1.000,00                                |
 | `number-round` | 1.000                                   |
 |                | (returns the `value` without formating) |
@@ -125,12 +121,21 @@ Now you can implement the DataProvider to our Component
 if you use the `date-to-now` format you can add `fixes`.
 Example:
 ```JavaScript
-fixes: {now: 'jetzt', start: 'Vor', final: 'Am'}
+fixes: {now: 'jetzt', default: 'Vor', final: 'Am'}
 ```
 it will return
 1. `jetzt`
 2. `Vor {x} Stunden/Minuten/Tagen`
 3. `Am 01.01.1970`
+
+if an value is set for one of the following arguments then the difference will shown for that arg (`days:"days"` => difference in days will be returned). It will work if you enable `minutes` but `now`  and/or `days` are/is disabled.
+| arg       | desc    |
+| --------- | --- |
+| `now`     |  will enable difference now   |
+| `minutes` |  will enable difference minutes   |
+| `hours`   |  will enable difference hours   |
+| `days`    |  will enable difference days  |
+| `weeks`   |  will enable difference weeks   |
 
 ### Containers
 | value            | desc                               |
