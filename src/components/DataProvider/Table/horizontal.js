@@ -18,7 +18,13 @@ const Horizontal = (props) => {
     var caption = options.caption || null
 
     return (
-        <Table hover variant={options.variant} className={`align-middle table-${options.bg || ''} text-${options.bg == 'dark' ? options.color || 'light' : 'dark'}`} size={options.size || 'lg'}>
+        <Table 
+            hover={options?.hover || false}
+            bordered={options?.bordered || false}
+            striped={options?.striped || false}
+            variant={options.variant}
+            className={`align-middle table-${options.bg || ''} text-${options.bg == 'dark' ? options.color || 'light' : 'dark'}`} size={options.size || 'lg'}
+        >
             { caption ? (
                 <caption>{caption}</caption>
             ) : ""}
@@ -26,10 +32,10 @@ const Horizontal = (props) => {
                 <tr>
                     { headers.map((head, h) =>
                         <>
-                        <th key={`${head_prefix}-${head.name}`} 
+                        <th key={`${head_prefix}-${head.label}`} 
                             className={`text-${head.pos || 'start'} ${get_display(head.display || null, 'col')} align-middle`}
                         >   
-                            {get_icon(head.icon || null, 'start')} {head.name} {get_icon(head.icon || null, 'end')}
+                            {get_icon(head.icon || null, 'start')} {head.label} {get_icon(head.icon || null, 'end')}
                         </th>
                         </>
                     )}
@@ -59,12 +65,12 @@ const Horizontal = (props) => {
                     </tr>
                     </>
                 )}
-                { options.sum ? (
-                    <tr className={`table-${options.sum.variant}`}>
+                { options?.sum ? (
+                    <tr className={`table-${options.sum.variant || 'success'}`}>
                         { headers.map((head, h) =>
                             <>
                             { h == 0 ? (
-                                <th>{options.sum.name}</th>
+                                <th>{options.sum.label}</th>
                             ) : (
                                 <>
                                 { head.sum ? (
@@ -89,7 +95,7 @@ const Horizontal = (props) => {
                         )}
                     </tr>
                 ) : ""}
-                { options.add ? (
+                { options?.add ? (
                     <tr>
                         <td colSpan={get_colspan(headers, options.buttons)}>
                             <Button 
@@ -103,7 +109,7 @@ const Horizontal = (props) => {
                         </td>
                     </tr>
                 ) : ""}
-                { options.load.function ? (
+                { options?.load?.function ? (
                     <>
                     { !options.load.state ? (
                         <tr>

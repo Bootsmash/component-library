@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { TableHorizontal, TableVertical } from './Table'
+import { Cards } from './Card';
 
 export const DataProvider = (props) => {
     var data = props['value']
@@ -20,6 +21,10 @@ export const DataProvider = (props) => {
         case 'table-vertical':
             return (
                 <TableVertical headers={headers} options={options}>{data}</TableVertical>
+            )
+        case 'card':
+            return (
+                <Cards headers={headers} options={options}>{data}</Cards>
             )
         default:
             return (

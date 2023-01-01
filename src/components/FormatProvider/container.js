@@ -7,12 +7,10 @@ export const Container = (props) => {
 
     // Initialize Variables
     var container = props['ct'] || ""
-    var title = props['title'] || ""
     var position = props['pos'] || ""
     var colspan = props['colspan'] || 1
     const display = props['display'] || null
     var text = props['text'] || "dark"
-    var bg = props['bg'] || "light"
 
     const get_display = () => {
         var output = "";
@@ -36,14 +34,6 @@ export const Container = (props) => {
     }
 
     switch (container) {
-        case 'row':
-            output = (
-                <tr className={`${get_display()} text-${text} bg-${bg}`}>
-                    <th>{title}</th>
-                    <td className={`text-${position ? position : 'end'} align-middle`} colSpan={colspan}>{input}</td>
-                </tr>
-            )
-            break;
         case 'col':
         case 'col-td':
             output = (

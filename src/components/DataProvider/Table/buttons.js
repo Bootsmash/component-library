@@ -35,17 +35,17 @@ export const TableButtons = (props) => {
                 <>
                 {buttons.map((btn, b) => 
                     <td 
-                        name={btn.name}
+                        name={btn.label}
                         className={`${get_display(btn.display || null, 'col')} text-center align-middle`}
-                        key={`${prefix}-${btn.name}`}
+                        key={`${prefix}-${btn.label}`}
                     >
                         { btn.tooltip ? (
                             <>
                             <OverlayTrigger
-                                key={`${prefix}-${btn.name}-overlay`}
+                                key={`${prefix}-${btn.label}-overlay`}
                                 placement={btn.tooltip.pos || 'top'}
                                 overlay={
-                                <Tooltip id={`${prefix}-${btn.name}-tooltip`}>
+                                <Tooltip id={`${prefix}-${btn.label}-tooltip`}>
                                     {btn.tooltip.desc || ""}
                                 </Tooltip>
                                 }
