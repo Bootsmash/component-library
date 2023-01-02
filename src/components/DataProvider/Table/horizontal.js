@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { generate_prefix, get_value, get_display, get_icon, get_colspan } from '../functiones';
+import { generate_prefix, get_value, get_display, get_icon, get_colspan, has_permission } from '../functiones';
 import { get_sum, get_format } from './sum';
 import { FormatProvider } from '../../FormatProvider/index';
 import { TableButtons } from './buttons';
@@ -11,6 +11,7 @@ const Horizontal = (props) => {
     var data = props.children;
     const headers = props['headers'];
     var options = props['options'] || [];
+    var user = props.user || null;
 
     const head_prefix = generate_prefix(4)
     const body_prefix = generate_prefix(4)
@@ -39,7 +40,7 @@ const Horizontal = (props) => {
                         </th>
                         </>
                     )}
-                    <TableButtons buttons={options.buttons || null} ct="thead"/>
+                    <TableButtons buttons={options.buttons || null} ct="thead" user={user|| null}/>
                 </tr>
             </thead>
             <tbody>
@@ -60,7 +61,7 @@ const Horizontal = (props) => {
                             </>
                         )}
                         { options && options.buttons ? (
-                            <TableButtons buttons={options.buttons} ct="tbody"/>
+                            <TableButtons buttons={options.buttons} ct="tbody" user={user|| null}/>
                         ) : ""}
                     </tr>
                     </>
@@ -84,14 +85,28 @@ const Horizontal = (props) => {
                                         fixes={head.fixes || null}
                                     />
                                 ) : (
-                                    <td></td>
+                                    <td className={get_display(head?.display, 'col')}></td>
                                 )}
                                 </>
                             )}
                             </>
                         )}
                         { options.buttons.map((btn, b) =>
-                            <td></td>
+                            <>
+                            { btn?.permissions ? (
+                                <>
+                                { has_permission(user, btn.permissions) && user ? (
+                                    <>
+                                    <td className={get_display(btn?.display, 'col')}></td>
+                                    </>
+                                ) : "" }
+                                </>
+                            ) : (
+                                <>
+                                <td className={get_display(btn?.display, 'col')}></td>
+                                </>
+                            )}
+                            </>
                         )}
                     </tr>
                 ) : ""}

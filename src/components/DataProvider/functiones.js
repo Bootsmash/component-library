@@ -107,3 +107,39 @@ export const get_colspan = (headers=null, buttons=null) => {
 
     return colspan;
 };
+
+const get_permission = (user, permission) => {
+
+    switch (permission) {
+        case 'isSuperuser':
+            if (user.is_superuser == true) {
+                return true
+            } else {
+                return false
+            }
+        case 'isStaff':
+            if (user.is_staff == true) {
+                return true
+            } else {
+                return false
+            }
+        default:
+            if (user.user_permissions.includes(permission)) {
+                return true
+            } else {
+                return false
+            }
+    }
+}
+
+export const has_permission = (user, permissions) => {
+    var has_permission = false
+
+    for (var i = 0; i < permissions.length; i++) {
+        if (get_permission(user, permissions[i])) {
+            has_permission = true
+        }
+    }
+    
+    return has_permission    
+};

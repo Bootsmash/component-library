@@ -1,8 +1,6 @@
 export const get_sum = (data, header) => {
     var output = 0;
 
-    console.log(header.sum)
-
     switch (header.sum) {
         case 'sum':
             for (var i = 0; i < data.length; i++) {

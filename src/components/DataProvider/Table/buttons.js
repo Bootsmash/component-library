@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { BsCommand } from 'react-icons/bs';
-import { get_display, generate_prefix } from '../functiones';
+import { get_display, generate_prefix, has_permission } from '../functiones';
 
 export const TableButtons = (props) => {
     const prefix = generate_prefix(4)
+    var user = props.user || null
 
     const get_button = (btn) => {
         return (
@@ -16,6 +17,36 @@ export const TableButtons = (props) => {
                 >
                 {btn.icon || <BsCommand />}
             </Button>
+        )
+    }
+
+    const button = (btn) => {
+        return (
+            <td 
+                name={btn.label}
+                className={`${get_display(btn.display || null, 'col')} text-center align-middle`}
+                key={`${prefix}-${btn.label}`}
+            >
+                { btn.tooltip ? (
+                    <>
+                    <OverlayTrigger
+                        key={`${prefix}-${btn.label}-overlay`}
+                        placement={btn.tooltip.pos || 'top'}
+                        overlay={
+                        <Tooltip id={`${prefix}-${btn.label}-tooltip`}>
+                            {btn.tooltip.desc || ""}
+                        </Tooltip>
+                        }
+                    >
+                        { get_button(btn) }
+                    </OverlayTrigger>
+                    </>
+                ) : (
+                    <>
+                    { get_button(btn) }
+                    </>
+                )}
+            </td>
         )
     }
 
@@ -34,31 +65,15 @@ export const TableButtons = (props) => {
             return (
                 <>
                 {buttons.map((btn, b) => 
-                    <td 
-                        name={btn.label}
-                        className={`${get_display(btn.display || null, 'col')} text-center align-middle`}
-                        key={`${prefix}-${btn.label}`}
-                    >
-                        { btn.tooltip ? (
+                    <>
+                        {!btn?.permissions || ( user && has_permission(user, btn.permissions)) ? (
                             <>
-                            <OverlayTrigger
-                                key={`${prefix}-${btn.label}-overlay`}
-                                placement={btn.tooltip.pos || 'top'}
-                                overlay={
-                                <Tooltip id={`${prefix}-${btn.label}-tooltip`}>
-                                    {btn.tooltip.desc || ""}
-                                </Tooltip>
-                                }
-                            >
-                                { get_button(btn) }
-                            </OverlayTrigger>
+                            <td>
+                                { button(btn) }
+                            </td>
                             </>
-                        ) : (
-                            <>
-                            { get_button(btn) }
-                            </>
-                        )}
-                    </td>
+                        ) : ""}
+                    </>
                 )}
                 </>
             )
