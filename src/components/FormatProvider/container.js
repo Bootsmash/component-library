@@ -25,6 +25,7 @@ export const Container = (props) => {
                 case 'row':
                     output += "table-row"
                     break;
+                case 'none':
                 default:
                     output = null
                     break;

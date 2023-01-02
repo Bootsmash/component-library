@@ -3,6 +3,8 @@ import { Card, Col, Row, Button } from 'react-bootstrap';
 import { FormatProvider } from '../../FormatProvider';
 import { get_value } from '../functiones';
 
+import { VarText } from '../VarText';
+
 
 export const Cards = (props) => {
 
@@ -36,8 +38,8 @@ export const Cards = (props) => {
                                 />
                             </Card.Header>
                         ) : ""}
-                        { options?.img ? (
-                            <Card.Img variant={options.img?.variant || 'top'} src={options.img?.img || ""}/>
+                        { options?.img || options?.baseurl ? (
+                            <Card.Img variant='top' src={(options.img?.baseurl || "") + (item[options.img.img] || "")}/>
                         ) : ""}
                         <Card.Body>
                             <>
@@ -67,7 +69,9 @@ export const Cards = (props) => {
                             ) : ""}
                             { options?.body?.content ? (
                                 <Card.Text>
-                                    {options.body.content}
+                                    <VarText data={item}>
+                                        {options.body.content}
+                                    </VarText>
                                 </Card.Text>
                             ) : ""}
                             </>

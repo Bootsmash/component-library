@@ -1,4 +1,5 @@
 import { BsDash } from 'react-icons/bs';
+
 export const format_input = (format, input, fixes=null, suffix=null) => {
 
     if (!input) {
@@ -53,8 +54,8 @@ export const format_input = (format, input, fixes=null, suffix=null) => {
                         return (fixes?.default + " "|| "") + Math.round(diff_hours) + " " + fixes.hours
                     }
                 }
-            } else if (diff_days < 2 && (fixes?.days || fixes?.day)) {
-                return (fixes?.default + " " || "") + Math.round(diff_days) + " " + (fixes.day || fixes.days)
+            } else if (diff_days < 2 && fixes?.day) {
+                return fixes.day
 
             } else if (diff_days < 7 && (fixes?.days)) {
                 return (fixes?.default + " " || "") + Math.round(diff_days) + " " + fixes.days
@@ -99,7 +100,8 @@ export const format_input = (format, input, fixes=null, suffix=null) => {
             }
 
             return output
-
+            
+        case 'none':
         default:
             return input
     }

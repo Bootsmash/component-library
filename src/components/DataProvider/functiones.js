@@ -1,14 +1,15 @@
 import React from 'react'
 
 export const generate_prefix = (length) =>{
-    var prefix;
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = ' ';
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
     
-    for ( var i = 0; i < length; i++) {
-        prefix += characters.charAt(Math.floor(Math.random() * length));
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 
-    return prefix;
+    return result;
 };
 
 export const get_value = (value_key, value, space=null) => {
@@ -19,7 +20,12 @@ export const get_value = (value_key, value, space=null) => {
             return value[value_key];
         } else {
             for (var i = 0; i < key.length; i++) {
-                value = value[key[i]]
+                try{
+                    value = value[key[i]]
+                } catch (err) {
+                    console.error("Choosen variable was not found or does not exist!")
+                    value = null
+                }
             }
             return value;
         }

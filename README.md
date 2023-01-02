@@ -45,7 +45,6 @@ options: {
 |    arg    | value | desc                | default |
 |:---------:|:-----:| ------------------- | ------- |
 |   `img`   |  src  | source of the image | `null`  |
-| `variant` | `top`, `bottom` |                     | `top`   |
 
 ##### Footer
 |   arg    |  value   |
