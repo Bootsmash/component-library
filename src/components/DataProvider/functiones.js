@@ -12,45 +12,59 @@ export const generate_prefix = (length) =>{
     return result;
 };
 
-export const get_value = (value_key, value, space=null) => {
-    if (value_key.includes('.')){
-        const key = value_key.split('.')
+const value_get = (value_key, value) => {
+    console.log(value[value_key])
 
-        if (key.length == 1) {
-            return value[value_key];
-        } else {
-            for (var i = 0; i < key.length; i++) {
-                try{
-                    value = value[key[i]]
-                } catch (err) {
-                    console.error("Choosen variable was not found or does not exist!")
-                    value = null
-                }
-            }
-            return value;
-        }
-    } else if (value_key.includes('+')) {
-        const key = value_key.split('+')
-
-        if (key.length == 1){
-            return value[value_key];
-        } else {
-            var output = "";
-            for (var i = 0; i < key.length; i++) {
-                output += value[key[i]]
-                if ((i + 1) < key.length) {
-                    output += (space || " ");
-                }
-            }
-            return output;
-        }
+    if (value[value_key] != null) {
+        
+        return value[value_key]
     } else {
-        try {
-            return value[value_key];
-        } catch (error) {
-            console.error("Choosen variable was not found or does not exist!")
-            return null
+        console.error("Variable " + value_key + " not founded or does not exist!")
+        return null
+    }
+}
+
+const value_multiple = (value_key, value, space=null) => {
+    var input = value_key.split('+')
+    var res = []
+
+    if (!space)
+        space = " "
+    
+    for (var i = 0; i < input.length; i++) {
+        if (input[i].includes('.')) {
+            if ((i + 1) < input.length) {
+                res += value_navigate(input[i], value) + space;
+            } else {
+                res += value_navigate(input[i], value);
+            }
+        } else {
+            if ((i + 1) < input.length) {
+                res += value_get(input[i], value) + space;
+            } else {
+                res += value_get(input[i], value);
+            }
         }
+    }
+    return res
+}
+
+const value_navigate = (value_key, value, space=null) => {
+    var input = value_key.split('.')
+
+    for (var i = 0; i < input.length; i++) {
+        value = value_get(input[i], value)
+    }
+    return value
+}
+
+export const get_value = (value_key, value, space=null) => {
+    if (value_key.includes('+')) {
+        return value_multiple(value_key, value, space)
+    } else if (value_key.includes('.')) {
+        return value_navigate(value_key, value, space)
+    } else {
+        return value_get(value_key, value)
     }
 };
 

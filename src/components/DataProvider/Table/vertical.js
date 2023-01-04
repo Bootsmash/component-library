@@ -49,7 +49,7 @@ const Vertical = (props) => {
                         ) : (
                             <>
                             <FormatProvider 
-                                value={get_value(head.value, data.user, (head.space || null))} 
+                                value={get_value(head.value, data, (head.space || null))} 
                                 format={head.format || null}
                                 ct="col"
                                 pos={'end'}

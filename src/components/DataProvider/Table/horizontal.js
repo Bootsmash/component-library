@@ -5,16 +5,19 @@ import { get_sum, get_format } from './sum';
 import { FormatProvider } from '../../FormatProvider/index';
 import { TableButtons } from './buttons';
 import { BsPlusLg } from 'react-icons/bs';
+import { TableVertical } from '.';
 
 const Horizontal = (props) => {
 
     var data = props.children;
     const headers = props['headers'];
+    var subtable = props['subtable'] || null;
     var options = props['options'] || [];
     var user = props.user || null;
 
     const head_prefix = generate_prefix(4)
     const body_prefix = generate_prefix(4)
+
 
     var caption = options.caption || null
 
@@ -64,6 +67,13 @@ const Horizontal = (props) => {
                             <TableButtons buttons={options.buttons} ct="tbody" user={user|| null}/>
                         ) : ""}
                     </tr>
+                    { subtable ? (
+                        <tr>
+                            <td colSpan={get_colspan(headers, options.buttons)}>
+                                <TableVertical headers={subtable.headers} options={subtable.options || null}>{item}</TableVertical>
+                            </td>
+                        </tr>
+                    ) : ""}
                     </>
                 )}
                 { options?.sum ? (

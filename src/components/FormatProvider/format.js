@@ -1,10 +1,9 @@
 import { BsDash } from 'react-icons/bs';
 
 export const format_input = (format, input, fixes=null, suffix=null) => {
-
-    if (!input) {
+    
+    if (input == null)
         return <BsDash />
-    }
 
     switch(format) {
         case 'date':
@@ -19,13 +18,19 @@ export const format_input = (format, input, fixes=null, suffix=null) => {
         case 'date-time':
             // Format Input as Date Time
             // dd.mm.YYYY HH:ii
-            return new Intl.DateTimeFormat('de-DE', {
+            var output =  new Intl.DateTimeFormat('de-DE', {
                 year: 'numeric', 
                 month: '2-digit',
                 day: '2-digit',
                 hour: '2-digit',
                 minute: '2-digit',
-            }).format(new Date(input)) + (" " + suffix || "");
+            }).format(new Date(input));
+
+            if (suffix) {
+                output += " " + suffix
+            }
+
+            return output
         
         case 'date-to-now':
             var old = new Date(input)

@@ -5,7 +5,8 @@ import { Cards } from './Card';
 
 export const DataProvider = (props) => {
     var data = props['value']
-    const headers = props['headers']
+    const headers = props.options.headers
+    const subtable = props.subtable || null
     var options = props['options'] || []
     var user = props.user || null;
 
@@ -17,7 +18,7 @@ export const DataProvider = (props) => {
     switch (variant) {
         case 'table-horizontal':
             return (
-                <TableHorizontal headers={headers} options={options} user={user}>{data}</TableHorizontal>
+                <TableHorizontal headers={headers} options={options} subtable={subtable} user={user}>{data}</TableHorizontal>
             );
         case 'table-vertical':
             return (
