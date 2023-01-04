@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { generate_prefix, get_value, get_display, get_icon } from '../functiones';
+import { generate_prefix, get_value, get_icon } from '../functiones';
 import { FormatProvider } from '../../FormatProvider/index';
 
 const Vertical = (props) => {
@@ -32,16 +32,32 @@ const Vertical = (props) => {
                         <th className='align-middle'>
                             {head.label} {get_icon(head.icon || null)}
                         </th>
-                        {data.map((item, i) =>
+                        { data.length ? (
+                            <>
+                            {data.map((item, i) =>
+                                <FormatProvider 
+                                    value={get_value(head.value, item, (head.space || null))} 
+                                    format={head.format || null} 
+                                    ct="col"
+                                    pos={'end'}
+                                    colspan={head.colspan}
+                                    fixes={head.fixes || null}
+                                    suffix={head.suffix || null}
+                                />
+                            )}
+                            </>
+                        ) : (
+                            <>
                             <FormatProvider 
-                                value={get_value(head.value, item, (head.space || null))} 
-                                format={head.format || null} 
+                                value={get_value(head.value, data.user, (head.space || null))} 
+                                format={head.format || null}
                                 ct="col"
                                 pos={'end'}
                                 colspan={head.colspan}
                                 fixes={head.fixes || null}
                                 suffix={head.suffix || null}
                             />
+                            </>
                         )}
                     </tr>
                 </tbody>

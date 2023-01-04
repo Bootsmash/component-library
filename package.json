@@ -1,15 +1,15 @@
 {
   "name": "@bootsmash/component-library",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "A react component library for different stuff",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build-lib": "rollup -c"
+    "build-lib": "rollup -c",
+    "build": "rollup -c && npm publish"
   },
   "repository": {
     "type": "git",
