@@ -1,0 +1,52 @@
+html {
+  height: -webkit-fill-available;
+}
+
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+.sidebar {
+  height: 100vh;
+  height: -webkit-fill-available;
+  max-height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;;
+}
+
+.sidebar div{
+  min-height: 100vh;
+  max-height: 100vh;
+}
+
+.sidebar svg {
+  margin-right: 1em;
+  vertical-align: -.125em;
+  pointer-events: none;
+  fill: currentColor;
+}
+
+.dropdown-toggle { outline: 0; }
+
+.nav-flush li .nav-link {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-pills svg{
+  margin: 0;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  vertical-align: -.125em;
+  pointer-events: none;
+  fill: currentColor;
+}
+
+.sidebar .nav-item .disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.6;
+}
