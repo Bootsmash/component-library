@@ -11,11 +11,13 @@ export const NavProvider = (props) => {
     var title = props.title || "Example"
     var options = props.options || null
     var categorys = props.categorys || null
+    var usermenu = props.usermenu || null
+    var user = props.user || null
 
     switch (variant) {
         case 'sidebar':
             return (
-                <Sidebar color={color} headers={headers} title={title} />
+                <Sidebar color={color} headers={headers} title={title} usermenu={usermenu} user={user}/>
             );
         case 'navbar':
             return (

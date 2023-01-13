@@ -1,8 +1,9 @@
 import React from 'react';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Link, useLocation, NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
-export const Sidebar = ({color, headers, title}) => {
+export const Sidebar = ({color, headers, title, usermenu, user}) => {
 
     var color = color || "light"
 
@@ -11,18 +12,51 @@ export const Sidebar = ({color, headers, title}) => {
         {/* Normal Sidebar */}
         <div className='sidebar d-none d-md-block'>
             <div className={`p-3 ${color === "dark" ? "text-white bg-dark" : "bg-light"}`}>
-                <a href="/" class={`align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none ${color === "dark" ? "text-white" : "text-black"}`}>
-                    <span class="fs-4">{title}</span>
+                <a href="/" className={`align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none ${color === "dark" ? "text-white" : "text-black"}`}>
+                    <span className="fs-4">{title}</span>
                 </a>
                 <hr />
                 {headers ? (
-                    <ul class="nav nav-pills flex-column mb-auto">
+                    <ul className="nav nav-pills flex-column mb-auto">
                     {headers.map((head, h) =>
-                        <SidebarItem label={head.label} to={head.to} icon={head.icon} color={color} disabled={head.disabled || false}/>
+                        <>
+                        {!head?.hidden && !head?.dropdown ? (
+                            <SidebarItem label={head.label} to={head.to || null} icon={head.icon} color={color} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute}/>
+                        ) : ""}
+                        </>
                     )}
-                </ul>
+                    </ul>
                 ) : ""}
                 <hr />
+                {usermenu ? (
+                   <div class="dropdown usermenu">
+                        <a className={`d-flex align-items-center function-link text-center ${color === "dark" ? "text-white" : "text-black"} text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src={`${user.image || 'https://github.com/mdo.png'}`} alt="" width="32" height="32" class="rounded-circle me-2" />
+                            <strong>{user?.username || ""}</strong>
+                        </a>
+                        <ul className={`dropdown-menu dropdown-menu-${color} text-small shadow`} aria-labelledby="dropdownUser1">
+                            {usermenu.map((drop, d) =>
+                                <>
+                                {drop.label == "divider" ? (
+                                    <li><hr class="dropdown-divider" /></li>
+                                ) : (
+                                    <li>
+                                        { drop.execute ? (
+                                            <a className='dropdown-item function-link' onClick={drop?.execute || null}>
+                                                {drop.label}
+                                            </a>
+                                        ) : (
+                                            <NavLink className='dropdown-item' to={drop.to}>
+                                                {drop.label}
+                                            </NavLink>
+                                        )}
+                                    </li>
+                                )}
+                               </>
+                            )}                            
+                        </ul>
+                    </div>
+                ) : ""}
             </div>
         </div>
 
@@ -33,8 +67,12 @@ export const Sidebar = ({color, headers, title}) => {
             </a>
             { headers ? (
                 <ul className='nav nav-pills nav-flush flex-column mb-auto text-center'>
-                { headers.map((head,h) =>
-                    <SidebarIcon to={head.to} icon={head.icon} disabled={head.disabled || false} />
+                { headers.map((head, h) =>
+                    <>
+                    {!head?.hidden && !head?.dropdown ? (
+                        <SidebarIcon to={head.to} icon={head.icon} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute}/>
+                    ) : ""}
+                    </>
                 )}
             </ul>
             ) : ""}
@@ -43,7 +81,7 @@ export const Sidebar = ({color, headers, title}) => {
     )
 }
 
-const SidebarItem = ({label, to, color, icon, disabled}) => {
+const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
     var active = false
 
     var location = useLocation()
@@ -52,23 +90,29 @@ const SidebarItem = ({label, to, color, icon, disabled}) => {
         active = true
     }
 
-    if (!label || !to || !icon) {
+    if (!label || !icon) {
         console.error("Nicht alle Attribute Angegeben (label, to, icon)")
         return ("")
     }
 
     return (
         <>
-        <li className={`nav-item ${color === "dark" ? "" : "link-dark"}`}>
-            <NavLink to={to} className={`nav-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`}>
-                {icon} {label}
-            </NavLink>
+        <li className={`nav-item ${color === "dark" ? "" : "link-dark"} ${hidden ? 'd-none' : ''}`}>
+            {execute ? (
+                <a className={`nav-link function-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`} onClick={execute}>
+                    {icon} {label}
+                </a>
+            ) : (
+                <NavLink to={to} className={`nav-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`}>
+                    {icon} {label}
+                </NavLink>
+            )}
         </li>
         </>
     )
 }
 
-const SidebarIcon = ({to, icon}) => {
+const SidebarIcon = ({to, icon, hidden, execute}) => {
     var active = false
 
     var location = useLocation()
@@ -79,9 +123,15 @@ const SidebarIcon = ({to, icon}) => {
     return (
         <>
         <li>
-            <NavLink className='nav-link py-3' to={to}>
-                {icon}
-            </NavLink>
+            {execute ? (
+                <a className={`nav-link py-3 function-link ${hidden ? 'd-none' : ''}`} onClick={execute}>
+                    {icon}
+                </a>
+            ) : (
+                <NavLink className={`nav-link py-3 ${hidden ? 'd-none' : ''}`} to={to}>
+                    {icon}
+                </NavLink>
+            )}
         </li>
         </>
     )
