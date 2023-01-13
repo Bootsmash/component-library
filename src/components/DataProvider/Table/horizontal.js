@@ -5,7 +5,7 @@ import { get_sum, get_format } from './sum';
 import { FormatProvider } from '../../FormatProvider/index';
 import { TableButtons } from './buttons';
 import { BsPlusLg } from 'react-icons/bs';
-import { TableVertical } from '.';
+import { default as TableVertical } from './vertical';
 
 const Horizontal = (props) => {
 

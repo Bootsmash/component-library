@@ -1,25 +1,24 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, NavLink } from 'react-router-dom';
 import './Sidebar.css';
-import { BsHouse, BsSpeedometer } from 'react-icons/bs';
 
-export const Sidebar = ({style, headers, title}) => {
+export const Sidebar = ({color, headers, title}) => {
 
-    var style = style || "light"
+    var color = color || "light"
 
     return (
         <>
         {/* Normal Sidebar */}
         <div className='sidebar d-none d-md-block'>
-            <div className={`p-3 ${style === "dark" ? "text-white bg-dark" : "bg-light"}`}>
-                <a href="/" class={`align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none ${style === "dark" ? "text-white" : "text-black"}`}>
+            <div className={`p-3 ${color === "dark" ? "text-white bg-dark" : "bg-light"}`}>
+                <a href="/" class={`align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none ${color === "dark" ? "text-white" : "text-black"}`}>
                     <span class="fs-4">{title}</span>
                 </a>
                 <hr />
                 {headers ? (
                     <ul class="nav nav-pills flex-column mb-auto">
                     {headers.map((head, h) =>
-                        <SidebarItem label={head.label} to={head.to} icon={head.icon} style={style} disabled={head.disabled || false}/>
+                        <SidebarItem label={head.label} to={head.to} icon={head.icon} color={color} disabled={head.disabled || false}/>
                     )}
                 </ul>
                 ) : ""}
@@ -28,7 +27,7 @@ export const Sidebar = ({style, headers, title}) => {
         </div>
 
         {/* Only Icons Sidebar */}
-        <div className={`sidebar d-md-none ${style === "dark" ? "text-white bg-dark" : "bg-light"}`}>
+        <div className={`sidebar d-md-none ${color === "dark" ? "text-white bg-dark" : "bg-light"}`}>
             <a href="/" className='d-block p-3 link-dark text-decoration-none' title='Icon-only' data-bs-toggle='tooltip' data-bs-placement='right'>
                 <span className='visually-hidden'>Icon-only</span>
             </a>
@@ -44,7 +43,7 @@ export const Sidebar = ({style, headers, title}) => {
     )
 }
 
-const SidebarItem = ({label, to, style, icon, disabled}) => {
+const SidebarItem = ({label, to, color, icon, disabled}) => {
     var active = false
 
     var location = useLocation()
@@ -60,10 +59,10 @@ const SidebarItem = ({label, to, style, icon, disabled}) => {
 
     return (
         <>
-        <li className={`nav-item ${style === "dark" ? "" : "link-dark"}`}>
-            <Link to={to} className={`nav-link ${style === "dark" ? "text-white" : active ? "text-white" : "text-black"} ${active ? "active" : ""} ${disabled ? "disabled" : ""}`}>
+        <li className={`nav-item ${color === "dark" ? "" : "link-dark"}`}>
+            <NavLink to={to} className={`nav-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`}>
                 {icon} {label}
-            </Link>
+            </NavLink>
         </li>
         </>
     )
@@ -80,9 +79,9 @@ const SidebarIcon = ({to, icon}) => {
     return (
         <>
         <li>
-            <Link to={to} className={`nav-link py-3 ${active ? "active" : ""} `}>
+            <NavLink className='nav-link py-3' to={to}>
                 {icon}
-            </Link>
+            </NavLink>
         </li>
         </>
     )

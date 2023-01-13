@@ -5,7 +5,7 @@ import { Topbar } from './Topbar/Topbar';
 import { Dashboard } from './Dashboard/Dashboard';
 
 export const NavProvider = (props) => {
-    var style = props.style || "light"
+    var color = props.style || "light"
     var variant = props.variant || "none"
     var headers = props.headers || null
     var title = props.title || "Example"
@@ -15,11 +15,11 @@ export const NavProvider = (props) => {
     switch (variant) {
         case 'sidebar':
             return (
-                <Sidebar style={style} headers={headers} title={title} />
+                <Sidebar color={color} headers={headers} title={title} />
             );
         case 'navbar':
             return (
-                <Topbar style={style} headers={headers} title={title} />
+                <Topbar color={color} headers={headers} title={title} />
             );
         case 'dashboard':
             return (

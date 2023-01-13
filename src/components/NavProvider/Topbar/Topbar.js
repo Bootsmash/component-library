@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 export const Topbar = ({style, headers, title}) => {
