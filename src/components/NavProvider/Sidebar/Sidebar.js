@@ -38,9 +38,9 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                             {usermenu.map((drop, d) =>
                                 <>
                                 {drop.label == "divider" ? (
-                                    <li><hr class="dropdown-divider" /></li>
+                                    <li key={`${d}-${drop.label}`}><hr class="dropdown-divider" /></li>
                                 ) : (
-                                    <li>
+                                    <li key={`${d}-${drop.label}`}>
                                         { drop.execute ? (
                                             <a className='dropdown-item function-link' onClick={drop?.execute || null}>
                                                 {drop.label}

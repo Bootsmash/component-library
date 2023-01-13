@@ -8,7 +8,6 @@ body {
 }
 
 .sidebar {
-  margin: -20px;
   height: 100vh;
   height: -webkit-fill-available;
   max-height: 100vh;
