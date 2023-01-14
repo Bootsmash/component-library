@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const Container = (props) => {
 
     const input = props['value'] || props.children

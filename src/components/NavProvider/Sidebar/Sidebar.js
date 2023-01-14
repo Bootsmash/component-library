@@ -1,3 +1,4 @@
+import React from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
@@ -19,14 +20,14 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                     {headers.map((head, h) =>
                         <>
                         {!head?.hidden && !head?.dropdown ? (
-                            <SidebarItem label={head.label} to={head.to || null} icon={head.icon} color={color} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute}/>
+                            <SidebarItem label={head.label} to={head.to || null} icon={head.icon} color={color} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute || null}/>
                         ) : ""}
                         </>
                     )}
                     </ul>
                 ) : ""}
                 <hr />
-                {usermenu ? (
+                {usermenu && user ? (
                    <div className="dropdown usermenu">
                         <a className={`d-flex align-items-center function-link text-center ${color === "dark" ? "text-white" : "text-black"} text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src={`${user.image || 'https://github.com/mdo.png'}`} alt="" width="32" height="32" className="rounded-circle me-2" />
@@ -36,10 +37,10 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                             {usermenu.map((drop, d) =>
                                 <>
                                 {drop.label == "divider" ? (
-                                    <li key={`${d}-${drop.label}`}><hr className="dropdown-divider" /></li>
+                                    <li key={`${d}-divider`}><hr className="dropdown-divider" /></li>
                                 ) : (
                                     <li key={`${d}-${drop.label}`}>
-                                        { drop.execute ? (
+                                        { drop?.execute ? (
                                             <a className={`dropdown-item function-link ${drop.disabled ? 'disabled' : ''}`} onClick={drop?.execute || null}>
                                                 {drop.label}
                                             </a>
@@ -68,7 +69,7 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                 { headers.map((head, h) =>
                     <>
                     {!head?.hidden && !head?.dropdown ? (
-                        <SidebarIcon to={head.to} icon={head.icon} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute}/>
+                        <SidebarIcon to={head.to} icon={head.icon} disabled={head?.disabled || false} hidden={head.hidden || false} execute={head?.execute || null}/>
                     ) : ""}
                     </>
                 )}
@@ -97,7 +98,7 @@ const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
         <>
         <li className={`nav-item ${color === "dark" ? "" : "link-dark"} ${hidden ? 'd-none' : ''}`}>
             {execute ? (
-                <a className={`nav-link function-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`} onClick={execute}>
+                <a className={`nav-link function-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`} onClick={execute || null}>
                     {icon} {label}
                 </a>
             ) : (
@@ -122,7 +123,7 @@ const SidebarIcon = ({to, icon, hidden, execute}) => {
         <>
         <li>
             {execute ? (
-                <a className={`nav-link py-3 function-link ${hidden ? 'd-none' : ''}`} onClick={execute}>
+                <a className={`nav-link py-3 function-link ${hidden ? 'd-none' : ''}`} onClick={execute || null}>
                     {icon}
                 </a>
             ) : (

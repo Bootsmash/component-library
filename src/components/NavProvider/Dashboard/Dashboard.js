@@ -1,5 +1,5 @@
+import React from 'react';
 import './Dashboard.css';
-
 import { Link, useLocation } from 'react-router-dom';
 
 export const DashboardTop = (props) => {

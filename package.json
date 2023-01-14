@@ -1,6 +1,6 @@
 {
   "name": "@bootsmash/component-library",
-  "version": "1.1.6",
+  "version": "1.1.17",
   "description": "A react component library for different stuff",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -38,15 +38,13 @@
     "@storybook/react": "^6.5.15",
     "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.3.0",
-    "react-bootstrap": "^2.7.0",
     "react-bootstrap-storybook": "^1.5.1",
-    "react-dom": "^18.2.0",
-    "react-icons": "^4.7.1",
     "rollup": "^3.9.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-styles": "^4.0.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "react-icons": "^4.7.1"
   },
   "peerDependencies": {
     "react": "^18.2.0",

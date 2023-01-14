@@ -1,3 +1,4 @@
+import React from 'react';
 import { format_input } from './format';
 import { Container } from './container';
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, Col, Row, Button } from 'react-bootstrap';
 import { FormatProvider } from '../../FormatProvider';
 import { get_value } from '../functiones';
