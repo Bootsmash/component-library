@@ -27,16 +27,16 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                 ) : ""}
                 <hr />
                 {usermenu ? (
-                   <div class="dropdown usermenu">
+                   <div className="dropdown usermenu">
                         <a className={`d-flex align-items-center function-link text-center ${color === "dark" ? "text-white" : "text-black"} text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src={`${user.image || 'https://github.com/mdo.png'}`} alt="" width="32" height="32" class="rounded-circle me-2" />
+                            <img src={`${user.image || 'https://github.com/mdo.png'}`} alt="" width="32" height="32" className="rounded-circle me-2" />
                             <strong>{user?.username || ""}</strong>
                         </a>
                         <ul className={`dropdown-menu dropdown-menu-${color} text-small shadow`} aria-labelledby="dropdownUser1">
                             {usermenu.map((drop, d) =>
                                 <>
                                 {drop.label == "divider" ? (
-                                    <li key={`${d}-${drop.label}`}><hr class="dropdown-divider" /></li>
+                                    <li key={`${d}-${drop.label}`}><hr className="dropdown-divider" /></li>
                                 ) : (
                                     <li key={`${d}-${drop.label}`}>
                                         { drop.execute ? (
