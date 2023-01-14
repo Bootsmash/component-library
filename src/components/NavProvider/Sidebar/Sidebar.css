@@ -8,12 +8,11 @@ body {
 }
 
 .sidebar {
-  margin: -20px;
   height: 100vh;
   height: -webkit-fill-available;
   max-height: 100vh;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: hidden;;
 }
 
 .sidebar div{
@@ -52,10 +51,6 @@ body {
   opacity: 0.6;
 }
 
-.function-link {
+.nav-function-link {
   cursor: pointer;
-}
-
-.usermenu svg{
-  margin-left: 1em;
 }

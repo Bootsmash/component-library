@@ -17,7 +17,7 @@ export const NavProvider = (props) => {
     switch (variant) {
         case 'sidebar':
             return (
-                <Sidebar color={color} headers={headers} title={title} usermenu={usermenu} user={user}/>
+                <Sidebar color={color} headers={headers} title={title} user={user} usermenu={usermenu}/>
             );
         case 'navbar':
             return (

@@ -1,0 +1,18 @@
+{
+    "id": 1,
+    "profile": {
+        "uuid": "dc169934-9186-4b41-ad6c-b02224c619de"
+    },
+    "last_login": "2022-12-29T20:17:14.699550+01:00",
+    "is_superuser": true,
+    "username": "Bennet",
+    "first_name": "Bennet",
+    "last_name": "Schmidt",
+    "email": "bennet@octadic.de",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-12-23T22:15:28.915332+01:00",
+    "groups": [],
+    "user_permissions": [],
+    "uuid": "dc169934-9186-4b41-ad6c-b02224c619de"
+}
