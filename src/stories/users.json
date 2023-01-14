@@ -1,0 +1,54 @@
+[
+    {
+        "id": 1,
+        "profile": {
+            "uuid": "dc169934-9186-4b41-ad6c-b02224c619de"
+        },
+        "test": "7464.68",
+        "last_login": "2022-12-29T20:17:14.699550+01:00",
+        "is_superuser": true,
+        "username": "Bennet",
+        "first_name": "Bennet",
+        "last_name": "Schmidt",
+        "email": "bennet@octadic.de",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2022-12-23T22:15:28.915332+01:00",
+        "groups": [],
+        "user_permissions": []
+    },
+    {
+        "id": 2,
+        "profile": {
+            "uuid": "91694142-4f2f-43d9-90ed-fe01fb7823b0"
+        },
+        "last_login": "2022-12-29T17:56:50.953283+01:00",
+        "is_superuser": false,
+        "username": "Bennet.Schmidt",
+        "first_name": "Bennet",
+        "last_name": "Schmidt",
+        "email": "bennet.schmidt@octadic.de",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-12-27T17:01:59.820492+01:00",
+        "groups": [],
+        "user_permissions": []
+    },
+    {
+        "id": 3,
+        "profile": {
+            "uuid": "31415926-4f2f-43d9-90ed-fe01fb7823b0"
+        },
+        "last_login": "2022-12-31T17:56:50.953283+01:00",
+        "is_superuser": false,
+        "username": "Octagon",
+        "first_name": "Bennet",
+        "last_name": "Schmidt",
+        "email": "octagon@octadic.de",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-12-31T17:01:59.820492+01:00",
+        "groups": [],
+        "user_permissions": []
+    }
+]
