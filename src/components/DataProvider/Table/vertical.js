@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table } from 'react-bootstrap';
 import { generate_prefix, get_value, get_icon } from '../functiones';
 import { FormatProvider } from '../../FormatProvider/index';

@@ -1,6 +1,4 @@
-import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Link, useLocation, NavLink } from 'react-router-dom';
+import { useLocation, NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
 export const Sidebar = ({color, headers, title, usermenu, user}) => {
@@ -42,11 +40,11 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                                 ) : (
                                     <li key={`${d}-${drop.label}`}>
                                         { drop.execute ? (
-                                            <a className='dropdown-item function-link' onClick={drop?.execute || null}>
+                                            <a className={`dropdown-item function-link ${drop.disabled ? 'disabled' : ''}`} onClick={drop?.execute || null}>
                                                 {drop.label}
                                             </a>
                                         ) : (
-                                            <NavLink className='dropdown-item' to={drop.to}>
+                                            <NavLink className={`dropdown-item ${drop.disabled ? 'disabled' : ''}`} to={drop.to}>
                                                 {drop.label}
                                             </NavLink>
                                         )}

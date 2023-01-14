@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const generate_prefix = (length) =>{
     let result = ' ';
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -13,8 +11,6 @@ export const generate_prefix = (length) =>{
 };
 
 const value_get = (value_key, value) => {
-    console.log(value[value_key])
-
     if (value[value_key] != null) {
         
         return value[value_key]

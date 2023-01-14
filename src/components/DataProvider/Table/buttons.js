@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { BsCommand } from 'react-icons/bs';
 import { get_display, generate_prefix, has_permission } from '../functiones';

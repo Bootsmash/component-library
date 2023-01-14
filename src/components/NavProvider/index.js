@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Sidebar } from './Sidebar/Sidebar';
 import { Topbar } from './Topbar/Topbar';
 import { Dashboard } from './Dashboard/Dashboard';

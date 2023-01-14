@@ -1,11 +1,10 @@
-import React from 'react';
 import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 export const Topbar = ({style, headers, title}) => {
     return (
         <>
-        <Navbar bg={style} expand="lg" variant={style}>
+        <Navbar bg={style || 'light'} expand="lg" variant={style || 'light'}>
             <Container>
                 <Navbar.Brand>{title}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -16,7 +15,7 @@ export const Topbar = ({style, headers, title}) => {
                         { head?.dropdown ? (
                             <NavDropdown
                                 title={head.label}
-                                menuVariant={style}
+                                menuVariant={style || 'light'}
                             >
                                 { head.dropdown.map((drop, d) =>
                                     <>
@@ -31,7 +30,7 @@ export const Topbar = ({style, headers, title}) => {
                                                     {drop.label}
                                                 </a>
                                             ) : (
-                                                <LinkContainer to={drop.to} disabled={drop?.disabled || false}>
+                                                <LinkContainer to={drop?.to} disabled={drop?.disabled || false}>
                                                     <NavDropdown.Item>{drop.label}</NavDropdown.Item>
                                                 </LinkContainer>
                                             )}
@@ -43,9 +42,21 @@ export const Topbar = ({style, headers, title}) => {
                                 )}
                             </NavDropdown>
                         ) : (
-                            <LinkContainer to={head.to}>
-                                <Nav.Link disabled={head.disabled ? true : false}>{head.label}</Nav.Link>
-                            </LinkContainer>
+                            <>
+                            {!head.hidden ? (
+                                <>
+                                {head?.execute ? (
+                                    <a className={`nav-link function-link ${head.disabled ? 'disabled' : ''}`} onClick={head.execute}>
+                                        {head.label}
+                                    </a>
+                                ) : (
+                                    <LinkContainer to={head.to}>
+                                        <Nav.Link disabled={head.disabled ? true : false}>{head.label}</Nav.Link>
+                                    </LinkContainer>
+                                )}
+                                </>
+                            ) : ""}
+                            </>
                         )}
                         </>
                     )}

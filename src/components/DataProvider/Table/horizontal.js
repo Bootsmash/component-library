@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { generate_prefix, get_value, get_display, get_icon, get_colspan, has_permission } from '../functiones';
 import { get_sum, get_format } from './sum';
