@@ -1,8 +1,13 @@
 import React from 'react';
 import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { generate_prefix } from '../../DataProvider';
 
 export const Topbar = ({style, headers, title}) => {
+
+    const prf_drop = generate_prefix(4)
+    const prf_head = generate_prefix(4)
+
     return (
         <>
         <Navbar bg={style || 'light'} expand="lg" variant={style || 'light'}>
@@ -17,11 +22,12 @@ export const Topbar = ({style, headers, title}) => {
                             <NavDropdown
                                 title={head.label}
                                 menuVariant={style || 'light'}
+                                key={`${prf_head}-${h}-${head.label}`}
                             >
                                 { head.dropdown.map((drop, d) =>
                                     <>
                                     {drop.label == "divider" && !drop?.hidden ? (
-                                        <NavDropdown.Divider />
+                                        <NavDropdown.Divider key={`${prf_drop}-${d}-${drop.label}`}/>
                                     ) : (
                                         <>
                                         {!drop?.hidden ? (

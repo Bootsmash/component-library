@@ -49,7 +49,7 @@ const Horizontal = (props) => {
             <tbody>
                 { data.map((item, d) =>
                     <>
-                    <tr key={`${body_prefix}-${item[0]}`}>
+                    <tr key={`${body_prefix}-${item[0]}`} data-id={ options?.unique ? get_value(options.unique, item) : "" }>
                         { headers.map((head, h) =>
                             <>
                             <FormatProvider 

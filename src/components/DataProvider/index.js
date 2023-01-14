@@ -35,3 +35,4 @@ export const DataProvider = (props) => {
 }
 
 export { VarText } from './VarText';
+export * from './functiones';

@@ -39,6 +39,8 @@ Horizontal.args = {
             {label: 'test', tooltip: {pos: 'top', desc: 'Test Button'}, function: onLoad},
         ],
         hover: true,
+        unique: "profile.uuid"
+        
     },
     variant: 'table-horizontal',
     subtable: {

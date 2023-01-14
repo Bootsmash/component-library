@@ -1,10 +1,14 @@
 import React from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
+import { generate_prefix } from '../../DataProvider';
 import './Sidebar.css';
 
 export const Sidebar = ({color, headers, title, usermenu, user}) => {
 
     var color = color || "light"
+
+    const prf_head = generate_prefix(4)
+    const prf_drop = generate_prefix(4)
 
     return (
         <>
@@ -20,7 +24,7 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                     {headers.map((head, h) =>
                         <>
                         {!head?.hidden && !head?.dropdown ? (
-                            <SidebarItem label={head.label} to={head.to || null} icon={head.icon} color={color} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute || null}/>
+                            <SidebarItem key={`${prf_head}-${h}-${head.label}`} label={head.label} to={head.to || null} icon={head.icon} color={color} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute || null}/>
                         ) : ""}
                         </>
                     )}
@@ -37,15 +41,15 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                             {usermenu.map((drop, d) =>
                                 <>
                                 {drop.label == "divider" ? (
-                                    <li key={`${d}-divider`}><hr className="dropdown-divider" /></li>
+                                    <li key={`${prf_drop}-${d}-divider`}><hr className="dropdown-divider" /></li>
                                 ) : (
-                                    <li key={`${d}-${drop.label}`}>
+                                    <li>
                                         { drop?.execute ? (
                                             <a className={`dropdown-item function-link ${drop.disabled ? 'disabled' : ''}`} onClick={drop?.execute || null}>
                                                 {drop.label}
                                             </a>
                                         ) : (
-                                            <NavLink className={`dropdown-item ${drop.disabled ? 'disabled' : ''}`} to={drop.to}>
+                                            <NavLink key={`${prf_drop}-${d}-${drop.label}`} className={`dropdown-item ${drop.disabled ? 'disabled' : ''}`} to={drop.to}>
                                                 {drop.label}
                                             </NavLink>
                                         )}
@@ -69,7 +73,7 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                 { headers.map((head, h) =>
                     <>
                     {!head?.hidden && !head?.dropdown ? (
-                        <SidebarIcon to={head.to} icon={head.icon} disabled={head?.disabled || false} hidden={head.hidden || false} execute={head?.execute || null}/>
+                        <SidebarIcon key={`${prf_head}-${h}-ICON-${head.label}`} to={head.to} icon={head.icon} disabled={head?.disabled || false} hidden={head.hidden || false} execute={head?.execute || null}/>
                     ) : ""}
                     </>
                 )}
@@ -94,6 +98,8 @@ const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
         return ("")
     }
 
+    const key = generate_prefix(10)
+
     return (
         <>
         <li className={`nav-item ${color === "dark" ? "" : "link-dark"} ${hidden ? 'd-none' : ''}`}>
@@ -102,7 +108,7 @@ const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
                     {icon} {label}
                 </a>
             ) : (
-                <NavLink to={to} className={`nav-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`}>
+                <NavLink key={key} to={to} className={`nav-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`}>
                     {icon} {label}
                 </NavLink>
             )}
@@ -119,6 +125,9 @@ const SidebarIcon = ({to, icon, hidden, execute}) => {
     if (to === location.pathname) {
         active = true
     }
+    
+    const key = generate_prefix(10)
+
     return (
         <>
         <li>
@@ -127,7 +136,7 @@ const SidebarIcon = ({to, icon, hidden, execute}) => {
                     {icon}
                 </a>
             ) : (
-                <NavLink className={`nav-link py-3 ${hidden ? 'd-none' : ''}`} to={to}>
+                <NavLink key={key} className={`nav-link py-3 ${hidden ? 'd-none' : ''}`} to={to}>
                     {icon}
                 </NavLink>
             )}
