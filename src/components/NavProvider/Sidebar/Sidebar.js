@@ -1,6 +1,4 @@
 import React from 'react';
-import { FormGroup } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
 import { useLocation, NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
@@ -21,26 +19,43 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                     <ul className="nav nav-pills flex-column mb-auto">
                     {headers.map((head, h) =>
                         <>
-                        {!head.hidden && !head.dropdown ? (
-                            <SidebarItem 
-                                label={head.label}
-                                to={head.to || null}
-                                icon={head.icon}
-                                color={color}
-                                disabled={head.disabled || false}
-                                hidden={head.hidden || false}
-                                execute={head.execute}
-                            />
+                        {!head?.hidden && !head?.dropdown ? (
+                            <SidebarItem label={head.label} to={head.to || null} icon={head.icon} color={color} disabled={head.disabled || false} hidden={head.hidden || false} execute={head.execute || null}/>
                         ) : ""}
                         </>
                     )}
                     </ul>
                 ) : ""}
                 <hr />
-                <UserMenu 
-                    usermenu={usermenu}
-                    user={user}
-                />
+                {usermenu && user ? (
+                   <div className="dropdown usermenu">
+                        <a className={`d-flex align-items-center function-link text-center ${color === "dark" ? "text-white" : "text-black"} text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src={`${user.image || 'https://github.com/mdo.png'}`} alt="" width="32" height="32" className="rounded-circle me-2" />
+                            <strong>{user?.username || ""}</strong>
+                        </a>
+                        <ul className={`dropdown-menu dropdown-menu-${color} text-small shadow`} aria-labelledby="dropdownUser1">
+                            {usermenu.map((drop, d) =>
+                                <>
+                                {drop.label == "divider" ? (
+                                    <li key={`${d}-divider`}><hr className="dropdown-divider" /></li>
+                                ) : (
+                                    <li key={`${d}-${drop.label}`}>
+                                        { drop?.execute ? (
+                                            <a className={`dropdown-item function-link ${drop.disabled ? 'disabled' : ''}`} onClick={drop?.execute || null}>
+                                                {drop.label}
+                                            </a>
+                                        ) : (
+                                            <NavLink className={`dropdown-item ${drop.disabled ? 'disabled' : ''}`} to={drop.to}>
+                                                {drop.label}
+                                            </NavLink>
+                                        )}
+                                    </li>
+                                )}
+                               </>
+                            )}                            
+                        </ul>
+                    </div>
+                ) : ""}
             </div>
         </div>
 
@@ -51,26 +66,15 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
             </a>
             { headers ? (
                 <ul className='nav nav-pills nav-flush flex-column mb-auto text-center'>
-                { headers.map((head,h) =>
+                { headers.map((head, h) =>
                     <>
-                    {!head.hidden && !head.dropdown ? (
-                        <SidebarIcon 
-                            to={head.to}
-                            icon={head.icon}
-                            disabled={head.disabled || false}
-                            hidden={head.hidden || false}
-                            execute={head.execute}
-                        />
+                    {!head?.hidden && !head?.dropdown ? (
+                        <SidebarIcon to={head.to} icon={head.icon} disabled={head?.disabled || false} hidden={head.hidden || false} execute={head?.execute || null}/>
                     ) : ""}
                     </>
                 )}
             </ul>
             ) : ""}
-            <UserMenu 
-                usermenu={usermenu}
-                user={user}
-                icononly={true}
-            />
         </div>
         </>
     )
@@ -94,7 +98,7 @@ const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
         <>
         <li className={`nav-item ${color === "dark" ? "" : "link-dark"} ${hidden ? 'd-none' : ''}`}>
             {execute ? (
-                <a className={`nav-link nav-function-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`} onClick={execute}>
+                <a className={`nav-link function-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`} onClick={execute || null}>
                     {icon} {label}
                 </a>
             ) : (
@@ -107,7 +111,7 @@ const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
     )
 }
 
-const SidebarIcon = ({to, icon, hidden, execute, disabled}) => {
+const SidebarIcon = ({to, icon, hidden, execute}) => {
     var active = false
 
     var location = useLocation()
@@ -119,77 +123,15 @@ const SidebarIcon = ({to, icon, hidden, execute, disabled}) => {
         <>
         <li>
             {execute ? (
-                <a className={`nav-link py-3 nav-function-link ${hidden ? 'd-none' : ''} ${disabled ? "disabled" : ""}`} onClick={execute}>
+                <a className={`nav-link py-3 function-link ${hidden ? 'd-none' : ''}`} onClick={execute || null}>
                     {icon}
                 </a>
             ) : (
-                <NavLink className={`nav-link py-3 ${hidden ? 'd-none' : ''} ${disabled ? "disabled" : ""}`} to={to}>
+                <NavLink className={`nav-link py-3 ${hidden ? 'd-none' : ''}`} to={to}>
                     {icon}
                 </NavLink>
             )}
         </li>
-        </>
-    )
-}
-
-const UserMenu = ({usermenu, user, icononly=false}) => {
-    if (!usermenu || !user)
-        return ""
-    
-    if (icononly) {
-        return (
-            <div class="dropdown border-top">
-                <a class="function-link d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src={`${user.image || "https://github.com/mdo.png"}`} alt={user.username || "Profilbild"} width="24" height="24" class="rounded-circle" />
-                </a>
-                <UserMenuBody usermenu={usermenu} />
-            </div>
-        )
-    } else {
-        return (
-            <div class="dropdown">
-                <a class="function-link d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src={`${user.image || "https://github.com/mdo.png"}`} alt={user.username || "Profilbild"} width="32" height="32" class="rounded-circle me-2" />
-                    <strong>{user.username || "Not Found"}</strong>
-                </a>
-                <UserMenuBody usermenu={usermenu} />
-            </div>
-        )
-    }
-}
-
-const UserMenuBody = ({usermenu}) => {
-    return (
-        <>
-        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
-            {usermenu.map((menu, m) =>
-                <>
-                {!menu?.hidden ? (
-                    <>
-                    {menu.label == "divider" ? (
-                        <li><hr class="dropdown-divider" /></li>
-                    ) : (
-                        <>
-                        {menu?.execute ? (
-                            <li>
-                                <a className={`dropdown-item function-link ${menu.disabled ? "disabled" : ""}`} onClick={menu.execute}>
-                                    {menu.label}
-                                </a>
-                            </li>
-                        ) : (
-                            <li>
-                                <NavLink to={menu.to} className={`dropdown-item ${menu.disabled ? "disabled" : ""}`}>
-                                    {menu.label}
-                                </NavLink>
-                            </li>
-                        )}
-                        </>
-                    )}
-                    </>
-                ) : ""}   
-                </>
-            )}
-        </ul>
         </>
     )
 }

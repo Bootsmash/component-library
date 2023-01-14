@@ -5,7 +5,6 @@ import { get_value } from '../functiones';
 
 import { VarText } from '../VarText';
 
-
 export const Cards = (props) => {
 
     var data = props.children;

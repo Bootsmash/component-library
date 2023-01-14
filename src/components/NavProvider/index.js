@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from 'react'
 import { Sidebar } from './Sidebar/Sidebar';
 import { Topbar } from './Topbar/Topbar';
 import { Dashboard } from './Dashboard/Dashboard';
@@ -17,7 +16,7 @@ export const NavProvider = (props) => {
     switch (variant) {
         case 'sidebar':
             return (
-                <Sidebar color={color} headers={headers} title={title} user={user} usermenu={usermenu}/>
+                <Sidebar color={color} headers={headers} title={title} usermenu={usermenu} user={user}/>
             );
         case 'navbar':
             return (

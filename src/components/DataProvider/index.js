@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { TableHorizontal, TableVertical } from './Table'
+import { TableHorizontal, TableVertical } from './Table';
 import { Cards } from './Card';
 
 export const DataProvider = (props) => {
