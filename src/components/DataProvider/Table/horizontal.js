@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Spinner } from 'react-bootstrap';
 import { generate_prefix, get_value, get_display, get_icon, get_colspan, has_permission } from '../functiones';
 import { get_sum, get_format } from './sum';
 import { FormatProvider } from '../../FormatProvider/index';
@@ -19,7 +19,7 @@ const Horizontal = (props) => {
     const body_prefix = generate_prefix(4)
 
 
-    var caption = options.caption || null
+    var caption = options.caption || props['caption'] || null
 
     return (
         <Table 
@@ -47,36 +47,42 @@ const Horizontal = (props) => {
                 </tr>
             </thead>
             <tbody>
-                { data.map((item, d) =>
+                { data ? (
                     <>
-                    <tr key={`${body_prefix}-${item[0]}`} data-id={ options?.unique ? get_value(options.unique, item) : "" }>
-                        { headers.map((head, h) =>
-                            <>
-                            <FormatProvider 
-                                value={get_value(head.value, item, (head.space || null))} 
-                                format={head.format || null} 
-                                ct="col"
-                                pos={head.pos || 'start'} 
-                                display={head.display || null}
-                                fixes={head.fixes || null}
-                                suffix={head.suffix || null}
-                            />
-                            </>
-                        )}
-                        { options && options.buttons ? (
-                            <TableButtons buttons={options.buttons} ct="tbody" user={user|| null}/>
-                        ) : ""}
-                    </tr>
-                    { subtable ? (
-                        <tr>
-                            <td colSpan={get_colspan(headers, options.buttons)}>
-                                <TableVertical headers={subtable.headers} options={subtable.options || null}>{item}</TableVertical>
-                            </td>
+                    { data.map((item, d) =>
+                        <>
+                        <tr key={`${body_prefix}-${item[0]}`} data-id={ options?.unique ? get_value(options.unique, item) : "" }>
+                            { headers.map((head, h) =>
+                                <>
+                                <FormatProvider 
+                                    value={get_value(head.value, item, (head.space || null))} 
+                                    format={head.format || null} 
+                                    ct="col"
+                                    pos={head.pos || 'start'} 
+                                    display={head.display || null}
+                                    fixes={head.fixes || null}
+                                    suffix={head.suffix || null}
+                                />
+                                </>
+                            )}
+                            { options && options.buttons ? (
+                                <TableButtons buttons={options.buttons} ct="tbody" user={user|| null}/>
+                            ) : ""}
                         </tr>
-                    ) : ""}
+                        { subtable ? (
+                            <tr>
+                                <td colSpan={get_colspan(headers, options.buttons)}>
+                                    <TableVertical headers={subtable.headers} options={subtable.options || null}>{item}</TableVertical>
+                                </td>
+                            </tr>
+                        ) : ""}
+                        </>
+                    )}
                     </>
-                )}
+                ) : ""}
+                
                 { options?.sum ? (
+                    <>
                     <tr className={`table-${options.sum.variant || 'success'}`}>
                         { headers.map((head, h) =>
                             <>
@@ -119,53 +125,70 @@ const Horizontal = (props) => {
                             </>
                         )}
                     </tr>
-                ) : ""}
-                { options?.add ? (
-                    <tr>
-                        <td colSpan={get_colspan(headers, options.buttons)}>
-                            <Button 
-                                variant='success'
-                                className='w-100'
-                                onClick={options.add.function}
-                                disabled={options.add.function ? false : true}
-                            >
-                                <BsPlusLg /> {options.add.desc}
-                            </Button>
-                        </td>
-                    </tr>
-                ) : ""}
-                { options?.load?.function ? (
-                    <>
-                    { !options.load.state ? (
-                        <tr>
-                            <td colSpan={get_colspan(headers, options.buttons)}>
-                                <Button
-                                    variant='primary'
-                                    className='w-100'
-                                    onClick={options.load.function}
-                                >
-                                    {options.load.desc.default}
-                                </Button>
-                            </td>
-                        </tr>
-                    ) : (
-                        <tr>
-                            <td colSpan={get_colspan(headers, options.buttons)}>
-                                <Button
-                                    variant='primary'
-                                    className='w-100'
-                                    onClick={options.load.function}
-                                >
-                                    {options.load.desc.loading}
-                                </Button>
-                            </td>
-                        </tr>
-                    )}
                     </>
                 ) : ""}
+                { data ? (
+                    <>
+                    { options?.add ? (
+                        <tr>
+                            <td colSpan={get_colspan(headers, options.buttons)}>
+                                <Button 
+                                    variant='success'
+                                    className='w-100'
+                                    onClick={options.add.execute}
+                                    disabled={options.add.execute ? false : true}
+                                >
+                                    <BsPlusLg /> {options.add.label}
+                                </Button>
+                            </td>
+                        </tr>
+                    ) : ""}
+                    </>
+                ) : ""}
+                <LoadMore options={options}/>
             </tbody>
         </Table>
     )
 };
 
 export default Horizontal;
+
+
+const LoadMore = ({options}) => {
+    if (!options?.load)
+        return ""
+
+    return (
+        <>
+        { options?.load?.execute && !options?.load?.hidden ? (
+            <>
+            { !options.load.loading ? (
+                <tr>
+                    <td colSpan={get_colspan(options?.headers, options.buttons)}>
+                        <Button
+                            variant='primary'
+                            className='w-100'
+                            onClick={options.load.execute}
+                        >
+                            {options.load.label}
+                        </Button>
+                    </td>
+                </tr>
+            ) : (
+                <tr>
+                    <td colSpan={get_colspan(options?.headers, 100)}>
+                        <Button
+                            variant='primary'
+                            className='w-100'
+                            disabled
+                        >
+                            <Spinner animation="border" size="sm"/> {options.load.label}
+                        </Button>
+                    </td>
+                </tr>
+            )}
+            </>
+        ) : ""}
+        </>
+    )
+}

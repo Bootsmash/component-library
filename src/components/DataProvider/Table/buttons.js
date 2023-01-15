@@ -11,10 +11,10 @@ export const TableButtons = (props) => {
         return (
             <Button 
                 variant={btn.variant || 'link'} 
-                className={`text-${(btn.function || !btn.variant) ? btn.color || '' : ''}`}
-                onClick={btn.function || null}
-                disabled={btn.function ? false : true}
-                >
+                className={`text-${(btn.execute || !btn.variant) ? btn.color || '' : ''}`}
+                onClick={btn.execute || null}
+                disabled={btn.execute ? false : true}
+            >
                 {btn.icon || <BsCommand />}
             </Button>
         )
@@ -51,21 +51,27 @@ export const TableButtons = (props) => {
     }
 
     if (props.buttons) {
-        const buttons = props.buttons
+        var buttons = props.buttons
 
         if (props.ct == "thead" || props.ct == "head") {
             return (
                 <>
-                {buttons.map((btn, i) => 
+                { buttons ? (
+                    <>
+                    {buttons.map((btn, i) => 
                     <th width={btn.width || 30} className={get_display(btn.display || null, 'col')}></th>
-                )}
+                    )}
+                    </>
+                ) : ""}
                 </>
             )
         } else {
             return (
                 <>
-                {buttons.map((btn, b) => 
+                { buttons ? (
                     <>
+                    {buttons.map((btn, b) => 
+                        <>
                         {!btn?.permissions || ( user && has_permission(user, btn.permissions)) ? (
                             <>
                             <td>
@@ -73,8 +79,10 @@ export const TableButtons = (props) => {
                             </td>
                             </>
                         ) : ""}
+                        </>
+                    )}
                     </>
-                )}
+                ) : ""}
                 </>
             )
         }

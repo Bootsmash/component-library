@@ -14,13 +14,20 @@ const set_var = (data, div_id, tag=null) => {
     
     for (let i = 0; i < vars.length; i++){
         if (vars[i].getAttribute('done') != "true") {
-            value = get_value(vars[i].getAttribute('value'), data, vars[i].getAttribute('space') || null)
+            try {
+                value = get_value(vars[i].getAttribute('value'), data, vars[i].getAttribute('space') || null)
+            } catch {
+                value = ""
+            }
             
             format = vars[i].getAttribute('format') || 'none'
             fixes = vars[i].getAttribute('fixes') || null
             suffix = vars[i].getAttribute('suffix') || null
 
-            formatted = format_input(format, value, fixes, suffix)
+            fixes = JSON.parse(fixes)
+
+            if (value)
+                formatted = format_input(format, value, fixes, suffix)
 
             if (React.isValidElement(formatted)){
                 var none = vars[i].getAttribute('none') || null

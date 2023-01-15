@@ -17,7 +17,7 @@ export const DataProvider = (props) => {
     switch (variant) {
         case 'table-horizontal':
             return (
-                <TableHorizontal headers={headers} options={options} subtable={subtable} user={user}>{data}</TableHorizontal>
+                <TableHorizontal headers={headers} options={options} subtable={subtable} user={user} caption={props.caption || null}>{data}</TableHorizontal>
             );
         case 'table-vertical':
             return (
@@ -35,4 +35,5 @@ export const DataProvider = (props) => {
 }
 
 export { VarText } from './VarText';
+export { APIProvider } from './ApiProvider';
 export * from './functiones';

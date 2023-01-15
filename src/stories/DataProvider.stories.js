@@ -40,7 +40,6 @@ Horizontal.args = {
         ],
         hover: true,
         unique: "profile.uuid"
-        
     },
     variant: 'table-horizontal',
     subtable: {
