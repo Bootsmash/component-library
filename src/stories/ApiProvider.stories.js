@@ -47,13 +47,13 @@ ApiProvider.args = {
                 )
             },
             refresh: 30, // Seconds
+            add: {
+                label: "Test"
+            },
+            loadMore: {
+                label: "Mehr laden"
+            }
         }
     },
     variant: 'table-horizontal',
-    add: {
-        label: "Test"
-    },
-    loadMore: {
-        label: "Mehr laden"
-    }
 }

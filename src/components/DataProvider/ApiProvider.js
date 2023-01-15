@@ -86,9 +86,9 @@ export const APIProvider = (props) => {
         setPage(page + 1)
     }
 
-    if (props.add) {
+    if (api?.add) {
         props.options.add = {
-            label: (props.add.label || ""),
+            label: (api.add.label || ""),
             execute: onAdd
         }
     }
@@ -99,9 +99,9 @@ export const APIProvider = (props) => {
         ] 
     }
 
-    if (props.loadMore) {
+    if (api?.loadMore) {
         props.options.load = {
-            label: (props.loadMore.label || ""),
+            label: (api.loadMore.label || ""),
             execute: onLoad,
             loading: loading,
             hidden: !stateLoading,
