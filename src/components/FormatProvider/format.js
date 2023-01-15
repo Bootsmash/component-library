@@ -73,7 +73,7 @@ export const format_input = (format, input, fixes=null, suffix=null) => {
                 return (fixes?.default + " " || "") + Math.round(diff_days / 7) + " " + fixes.weeks
             }
             
-            return (fixes?.finish || "") + " " + new Intl.DateTimeFormat('de-DE', {
+            return (fixes?.finish ? fixes.finish + " " : "") + new Intl.DateTimeFormat('de-DE', {
                 year: 'numeric', 
                 month: '2-digit',
                 day: '2-digit'

@@ -1,48 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Form, Modal } from 'react-bootstrap';
-import { DataProvider, VarText } from './'
+import { Form } from 'react-bootstrap';
+import { DataProvider } from './'
 import useDebounce from '../../hooks/use-debounce';
 import './provider.css'
-import { BsTrash } from 'react-icons/bs';
+import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import { get_dataid } from '../functiones';
-
-const ModalDelete = ({show, handleClose, onDelete, delete_header, delete_body, object}) => {
-
-    return (
-        <>
-        <Modal
-            show={show}
-            onHide={handleClose}
-            backdrop='static'
-            keyboard={false}
-            centered
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>
-                    <VarText data={object}>
-                        {delete_header || "Objekt aus Datenbank löschen?"}
-                    </VarText>
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <VarText data={object}>
-                    {delete_body || "Der Lösch Vorgang kann nicht wieder rückgängig gemacht werden! Falls es untergeordnete Objekte gibt, werden diese ebenfalls gelöscht!"}
-                </VarText>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={handleClose}>
-                    Abbrechen
-                </Button>
-                <Button variant='outline-danger' onClick={onDelete}>
-                    Löschen
-                </Button>
-            </Modal.Footer>
-        </Modal>
-        </>
-    )
-}
-
+import { ModalDelete, ModalEdit } from './ApiModals';
 
 export const APIProvider = (props) => {
     var api = props.options.api
@@ -69,17 +33,29 @@ export const APIProvider = (props) => {
     const debounce = useDebounce(search, 500)
 
     const [showDelete, setShowDelete] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
 
     const handleCloseDelete = () => setShowDelete(false);
+    const handleCloseEdit = () => setShowEdit(false);
 
-    const onAdd = () => {
-        console.log("test")
-    }
+    const headers = { 
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json'
+    };
 
     const handleShowDelete = async e => {
-        await setObjectID(get_dataid(e))
-        await getObjectData(get_dataid(e))
+        let objid = get_dataid(e)
+        await setObjectID(objid)
+        await getObjectData(objid)
         setShowDelete(true)
+    }
+
+    const handleShowEdit = async e => {
+        let objid = get_dataid(e)
+        await setObjectID(objid)
+        await getObjectData(objid)
+        setShowEdit(true)
     }
 
     const onLoad = () => {
@@ -91,12 +67,28 @@ export const APIProvider = (props) => {
             label: (api.add.label || ""),
             execute: onAdd
         }
+    } else {
+        props.options.add = false
     }
 
-    if (api.delete) {
-        props.options.buttons = [
-            {label: "delete", icon: <BsTrash />, execute: handleShowDelete}
-        ] 
+    props.options.buttons = []
+
+    if (api?.edit) {
+        props.options.buttons[props.options.buttons.length] = 
+        {
+            label: "edit",
+            icon: <BsPencilSquare />,
+            execute: handleShowEdit
+        }
+    }
+
+    if (api?.delete) {
+        props.options.buttons[props.options.buttons.length] = 
+        {
+            label: "delete",
+            icon: <BsTrash />,
+            execute: handleShowDelete
+        }
     }
 
     if (api?.loadMore) {
@@ -106,6 +98,8 @@ export const APIProvider = (props) => {
             loading: loading,
             hidden: !stateLoading,
         }
+    } else {
+        props.options.load = false
     }
 
     const onDelete = async e => {
@@ -126,14 +120,21 @@ export const APIProvider = (props) => {
         }
     }
 
+    const onEdit = async (editFormData) => {
+        try {
+            const body = editFormData
+
+            const res = await axios.put(raw_url + object_id + "/", body, {headers})
+            setShowEdit(false)
+            getObjects(1, page * pagesize)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     const getObjectData = async (object_identification) => {
         try {
-            const res = await axios.get(raw_url + object_identification, {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${access_token}`,
-                }
-            })
+            const res = await axios.get(raw_url + object_identification + "/", {headers})
             
             setObjectData(res.data)
         } catch (err) {
@@ -149,12 +150,7 @@ export const APIProvider = (props) => {
         
         try {
             setLoading(true)
-            const res = await axios.get(url, {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${access_token}`,
-                }
-            })
+            const res = await axios.get(url, {headers})
 
             if (api?.page === "tab") {
                 setObjects(res.data.results)
@@ -167,11 +163,9 @@ export const APIProvider = (props) => {
                     }
                     setObjects(array)
                     let count = currentObjects + res.data.results.length
-                    if (page)
-                        setCurrentObject(count)
+                    setCurrentObject(count)
                 } else {
-                    if (!page_number && !page_size)
-                        setCurrentObject(res.data.results.length)
+                    setCurrentObject(res.data.results.length)
                     setObjects(res.data.results)
                 }
 
@@ -181,8 +175,7 @@ export const APIProvider = (props) => {
                     setStateLoading(false)
                 }
             }
-            if (!page_number && !page_size)
-                setGesObjects(res.data.count)
+            setGesObjects(res.data.count)
         
             setLoading(false)
 
@@ -200,7 +193,7 @@ export const APIProvider = (props) => {
 
             return () => clearInterval(intervall);
         }
-    }, [page, pagesize])
+    }, [page, pagesize, search])
 
     // API request if search param given
     useEffect(() => {
@@ -228,7 +221,7 @@ export const APIProvider = (props) => {
     // set caption
     useEffect(() => {
         setCaption(currentObjects + " / " + gesObjects)
-    }, [currentObjects, gesObjects, search])
+    }, [currentObjects, gesObjects])
 
     return (
         <>
@@ -252,9 +245,19 @@ export const APIProvider = (props) => {
                 show={showDelete}
                 handleClose={handleCloseDelete}
                 onDelete={onDelete}
-                delete_header={api.delete.title || null}
-                delete_body={api.delete.desc || null}
+                title={api.delete.title || null}
+                body={api.delete.desc || null}
                 object={objectData}
+            />
+        ) : ""}
+        { api?.edit && api?.edit?.fields ? (
+            <ModalEdit
+                show={showEdit}
+                handleClose={handleCloseEdit}
+                onEdit={onEdit}
+                title={api.edit.title || null}
+                object={objectData}
+                fields={api.edit.fields}
             />
         ) : ""}
         </>
