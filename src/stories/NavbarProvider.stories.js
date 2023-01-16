@@ -93,6 +93,7 @@ Sidebar.args = {
     variant: "sidebar",
     usermenu: [
         {label: "disabled", to: "/456", disabled: true},
+        {label: "hidden", to: "/456", hidden: true},
         {label: "divider"},
         {label: "Logout", execute: test},
     ],

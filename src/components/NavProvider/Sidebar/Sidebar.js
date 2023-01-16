@@ -40,21 +40,25 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                         <ul className={`dropdown-menu dropdown-menu-${color} text-small shadow`} aria-labelledby="dropdownUser1">
                             {usermenu.map((drop, d) =>
                                 <>
-                                {drop.label == "divider" ? (
-                                    <li key={`${prf_drop}-${d}-divider`}><hr className="dropdown-divider" /></li>
-                                ) : (
-                                    <li>
-                                        { drop?.execute ? (
-                                            <a className={`dropdown-item function-link ${drop.disabled ? 'disabled' : ''}`} onClick={drop?.execute || null}>
-                                                {drop.label}
-                                            </a>
-                                        ) : (
-                                            <NavLink key={`${prf_drop}-${d}-${drop.label}`} className={`dropdown-item ${drop.disabled ? 'disabled' : ''}`} to={drop.to}>
-                                                {drop.label}
-                                            </NavLink>
-                                        )}
-                                    </li>
-                                )}
+                                {!drop?.hidden == true ? (
+                                    <>
+                                    {drop.label == "divider" ? (
+                                        <li key={`${prf_drop}-${d}-divider`}><hr className="dropdown-divider" /></li>
+                                    ) : (
+                                        <li>
+                                            { drop?.execute ? (
+                                                <a className={`dropdown-item function-link ${drop.disabled ? 'disabled' : ''}`} onClick={drop?.execute || null}>
+                                                    {drop.label}
+                                                </a>
+                                            ) : (
+                                                <NavLink key={`${prf_drop}-${d}-${drop.label}`} className={`dropdown-item ${drop.disabled ? 'disabled' : ''}`} to={drop.to}>
+                                                    {drop.label}
+                                                </NavLink>
+                                            )}
+                                        </li>
+                                    )}
+                                    </>
+                                ) : ""}
                                </>
                             )}                            
                         </ul>
