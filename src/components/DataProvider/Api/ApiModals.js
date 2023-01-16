@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-import { format_input } from '../FormatProvider/format';
-import { get_value } from './functiones';
-import { VarText } from './VarText';
+import React, { useEffect, useState } from 'react';
+import { Modal, Button, Form, FloatingLabel } from 'react-bootstrap';
+import { format_input } from '../../FormatProvider/format';
+import { get_value, VarText } from '..';
 
 export const ModalDelete = ({show, handleClose, onDelete, title, body, object}) => {
     if (!object)
@@ -42,7 +41,7 @@ export const ModalDelete = ({show, handleClose, onDelete, title, body, object}) 
     )
 }
 
-const Field = ({label, type, value, name, disabled, hidden}) => {
+const Field = ({label, type, value, name, disabled, hidden, required}) => {
     const [newValue, setValue] = useState()
 
     useEffect(() => {
@@ -50,8 +49,8 @@ const Field = ({label, type, value, name, disabled, hidden}) => {
     }, [value])
 
     return (
-        <>
-        <div className='form-floating mb-3'>
+        <>          
+        <FloatingLabel className='mb-3'>
             <Form.Control 
                 value={newValue}
                 onChange={e => setValue(e.target.value)}
@@ -60,14 +59,16 @@ const Field = ({label, type, value, name, disabled, hidden}) => {
                 name={name}
                 disabled={disabled || false}
                 hidden={hidden || false}
+                placeholder={label}
+                required={required || false}
             />
-            <Form.Label htmlFor="Test">{label}</Form.Label>
-        </div>
+            <Form.Label>{label}</Form.Label>
+        </FloatingLabel>
         </>
     )
 }
 
-export const ModalEdit= ({show, handleClose, onEdit, title, object, fields}) => {
+export const ModalEdit = ({show, handleClose, onEdit, title, object, fields}) => {
 
     const onSubmit = e => {
         e.preventDefault()
@@ -106,14 +107,17 @@ export const ModalEdit= ({show, handleClose, onEdit, title, object, fields}) => 
                             <>
                             {fields.map((field, f) =>
                                 <>
-                                <Field 
-                                    label={field.label}
-                                    type={field.type}
-                                    value={get_value(field.value, object)}
-                                    name={field.value}
-                                    disabled={field.disabled}
-                                    hidden={field.hidden}
-                                />
+                                {field.edit ? (
+                                    <Field 
+                                        label={field.label}
+                                        type={field.type}
+                                        value={get_value(field.value, object)}
+                                        name={field.value}
+                                        disabled={field.disabled}
+                                        hidden={field.hidden}
+                                        required={field.required}
+                                    />
+                                ) : ""}
                                 </>
                             )}
                             </>
@@ -132,6 +136,71 @@ export const ModalEdit= ({show, handleClose, onEdit, title, object, fields}) => 
             </Modal>
             </>
         ) : ""}
+        </>
+    )
+}
+
+export const ModalCreate = ({show, handleClose, onCreate, title, fields}) => {
+
+    const onSubmit = e => {
+        e.preventDefault()
+
+        var tmp = {}
+
+        for (var i = 0; i < fields.length; i++) {
+            if (fields[i].create) {
+                tmp[fields[i].value] = document.getElementById(fields[i].value).value
+            }
+        }
+        
+        onCreate(tmp)
+    }
+
+    return (
+        <>
+        <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop='static'
+            keyboard={false}
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    {title}
+                </Modal.Title>
+            </Modal.Header>
+            <Form onSubmit={onSubmit}>
+                <Modal.Body>
+                    <>
+                    {fields ? (
+                        <>
+                        {fields.map((field, f) =>
+                            <>
+                            { field.create ? (
+                                <Field 
+                                    label={field.label}
+                                    type={field.type}
+                                    name={field.value}
+                                    required={field.required}
+                                />
+                            ) : ""}
+                            </>
+                        )}
+                        </>
+                    ) : ""}
+                    </>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-primary" onClick={handleClose}>
+                        Abbrechen
+                    </Button>
+                    <Button variant='success' type="submit">
+                        Speichern
+                    </Button>
+                </Modal.Footer>
+            </Form>
+        </Modal>
         </>
     )
 }

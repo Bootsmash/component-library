@@ -12,7 +12,7 @@ export default {
 
 import { default_fixes } from '../components'
 
-const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjczODc1MTAzLCJpYXQiOjE2NzM3ODg3MDMsImp0aSI6IjRhYjJjMDA4NmUxYzQ5NzBiM2FjZDQwZGU3NjIwZjY1IiwidXNlcl91dWlkIjoiNTg5ZTlmYjctZDY3OS00ZjNiLTg4ZGItMWEzM2I3NWM4NmRjIn0.5HoOtFPGUeE1hdCWw4ysj8BX1msxrurSChqgHWJSGhY"
+const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjczOTU1NjgyLCJpYXQiOjE2NzM4NjkyODIsImp0aSI6ImU3NmNkZjc1NTRiNjQwNDQ5MTE3MjRiMDcyOGRiYTJkIiwidXNlcl91dWlkIjoiNDc0M2ZkZGMtMDIyOS00NWE3LTg2YmEtMzBhODBhMzUyOWQwIn0.Glg9yxRmgKZChnlAq7WjnikhkGLWVBicF-VhDXRihjg"
 
 const Template = (args) => <APIProvider {...args} />;
 
@@ -52,20 +52,24 @@ ApiProvider.args = {
                     </>
                 )
             },
-            edit: {
-                title: (
-                    <>
-                    Benutzer: <d-var value='username'/>
-                    </>
-                ),
-                fields: [
-                    {label: "Benutzername", value: 'username', edit: "text", disabled: true},
-                    {label: "Vorname", value: 'first_name', edit: "text"},
-                    {label: "Nachname", value: 'last_name', edit: "text"},
-                    {label: "UUID", value: 'uuid', edit: "text", hidden: true},
-                    {label: "Email", value: 'email', edit: "email"},
-                ]
-            },
+            edit: (
+                <>
+                Benutzer: <d-var value='username'/>
+                </>
+            ),
+            create: (
+                <>
+                Benutzer hinzufügen
+                </>
+            ),
+           fields: [
+                {label: "Benutzername", value: 'username', type: "text", disabled: true, edit: true, create: true, required: true},
+                {label: "Vorname", value: 'first_name', type: "text", edit: true, create: true, required: true},
+                {label: "Nachname", value: 'last_name', type: "text", edit: true, create: true, required: true},
+                {label: "Email", value: 'email', type: "email", edit: true, create: true, required: true},
+                {label: "Password", value: 'password', type: "password", edit: false, create: true, required: true},
+                {label: "UUID", value: 'uuid', type: "text", hidden: true, edit: true},
+            ],
             refresh: false, // Seconds
             loadMore: {
                 label: "Mehr laden"

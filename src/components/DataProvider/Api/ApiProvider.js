@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
-import { DataProvider } from './'
-import useDebounce from '../../hooks/use-debounce';
+import { DataProvider } from '../'
+import useDebounce from '../../../hooks/use-debounce';
 import './provider.css'
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
-import { get_dataid } from '../functiones';
-import { ModalDelete, ModalEdit } from './ApiModals';
+import { get_dataid } from '../../functiones';
+import { ModalCreate, ModalDelete, ModalEdit } from './ApiModals';
 
 export const APIProvider = (props) => {
     var api = props.options.api
@@ -34,9 +34,7 @@ export const APIProvider = (props) => {
 
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
-
-    const handleCloseDelete = () => setShowDelete(false);
-    const handleCloseEdit = () => setShowEdit(false);
+    const [showCreate, setShowCreate] = useState(false);
 
     const headers = { 
         'Accept': 'application/json',
@@ -58,17 +56,12 @@ export const APIProvider = (props) => {
         setShowEdit(true)
     }
 
-    const onLoad = () => {
-        setPage(page + 1)
+    const handleShowCreate = () => {
+        setShowCreate(true)
     }
 
-    if (api?.add) {
-        props.options.add = {
-            label: (api.add.label || ""),
-            execute: onAdd
-        }
-    } else {
-        props.options.add = false
+    const onLoad = () => {
+        setPage(page + 1)
     }
 
     props.options.buttons = []
@@ -102,6 +95,15 @@ export const APIProvider = (props) => {
         props.options.load = false
     }
 
+    if (api?.create) {
+        props.options.create = {
+            label: (api.create || ""),
+            execute: handleShowCreate,
+        }
+    } else {
+        props.options.create = false
+    }
+
     const onDelete = async e => {
         if (object_id) {
             try {
@@ -127,6 +129,22 @@ export const APIProvider = (props) => {
             const res = await axios.put(raw_url + object_id + "/", body, {headers})
             setShowEdit(false)
             getObjects(1, page * pagesize)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const onCreate = async (createFormData) => {
+        try {
+            const body = createFormData
+
+            const res = await axios.post(raw_url, body, {headers})
+            if (res.status == 201) {
+                setShowCreate(false)
+                getObjects()
+            } else {
+                console.error(res)
+            }
         } catch (err) {
             console.log(err)
         }
@@ -243,21 +261,30 @@ export const APIProvider = (props) => {
         { api?.delete ? (
             <ModalDelete 
                 show={showDelete}
-                handleClose={handleCloseDelete}
+                handleClose={() => setShowDelete(false)}
                 onDelete={onDelete}
                 title={api.delete.title || null}
                 body={api.delete.desc || null}
                 object={objectData}
             />
         ) : ""}
-        { api?.edit && api?.edit?.fields ? (
+        { api?.edit && api?.edit ? (
             <ModalEdit
                 show={showEdit}
-                handleClose={handleCloseEdit}
+                handleClose={() => setShowEdit(false)}
                 onEdit={onEdit}
-                title={api.edit.title || null}
+                title={api.edit || ""}
                 object={objectData}
-                fields={api.edit.fields}
+                fields={api.fields}
+            />
+        ) : ""}
+        { api?.create && api.fields ? (
+            <ModalCreate
+                show={showCreate}
+                handleClose={() => setShowCreate(false)}
+                onCreate={onCreate}
+                title={api.create || ""}
+                fields={api.fields}
             />
         ) : ""}
         </>

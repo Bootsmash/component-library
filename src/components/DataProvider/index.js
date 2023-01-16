@@ -35,5 +35,5 @@ export const DataProvider = (props) => {
 }
 
 export { VarText } from './VarText';
-export { APIProvider } from './ApiProvider';
+export { APIProvider } from './Api/ApiProvider';
 export * from './functiones';

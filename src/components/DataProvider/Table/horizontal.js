@@ -127,25 +127,27 @@ const Horizontal = (props) => {
                     </tr>
                     </>
                 ) : ""}
-                { data ? (
+                <>
+                { options?.create ? (
                     <>
-                    { options?.add ? (
-                        <tr>
-                            <td colSpan={get_colspan(headers, options.buttons)}>
-                                <Button 
-                                    variant='success'
-                                    className='w-100'
-                                    onClick={options.add.execute}
-                                    disabled={options.add.execute ? false : true}
-                                >
-                                    <BsPlusLg /> {options.add.label}
-                                </Button>
-                            </td>
-                        </tr>
-                    ) : ""}
+                    <tr>
+                        <td colSpan={get_colspan(headers, options.buttons)}>
+                            <Button 
+                                variant='success'
+                                className='w-100'
+                                onClick={options.create.execute}
+                                disabled={options.create.execute ? false : true}
+                            >
+                                <BsPlusLg /> {options.create.label}
+                            </Button>
+                        </td>
+                    </tr>
                     </>
                 ) : ""}
-                <LoadMore options={options}/>
+                </>
+                {data ? (
+                    <LoadMore options={options}/>
+                ) : ""}
             </tbody>
         </Table>
     )
