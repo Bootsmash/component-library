@@ -13,8 +13,7 @@ export const APIProvider = (props) => {
 
     var raw_url = api.url || null
     var url = api.url + "?" || null
-    const access_token = api.access
-    const searching = props.search || null
+    var access_token = api.access
     const pagesize = api.items || 5
 
     const [objects, setObjects] = useState()
@@ -252,12 +251,16 @@ export const APIProvider = (props) => {
                 onChange={(e) => setSearch(e.target.value)}
             />
         ) : ""}
-        <DataProvider 
-            value={objects}
-            variant={props.variant}
-            options={props.options}
-            caption={caption}
-        />
+        {objects ? (
+            <>
+            <DataProvider 
+                value={objects}
+                variant={props.variant}
+                options={props.options}
+                caption={caption}
+            />
+            </>
+        ) :""}
         { api?.delete ? (
             <ModalDelete 
                 show={showDelete}

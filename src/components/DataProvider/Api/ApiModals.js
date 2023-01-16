@@ -9,34 +9,38 @@ export const ModalDelete = ({show, handleClose, onDelete, title, body, object}) 
 
     return (
         <>
-        <Modal
-            show={show}
-            onHide={handleClose}
-            backdrop='static'
-            keyboard={false}
-            centered
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>
+        {object ? (
+            <>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop='static'
+                keyboard={false}
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        <VarText data={object}>
+                            {title || "Objekt aus Datenbank löschen?"}
+                        </VarText>
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <VarText data={object}>
-                        {title || "Objekt aus Datenbank löschen?"}
+                        {body || "Der Lösch Vorgang kann nicht wieder rückgängig gemacht werden! Falls es untergeordnete Objekte gibt, werden diese ebenfalls gelöscht!"}
                     </VarText>
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <VarText data={object}>
-                    {body || "Der Lösch Vorgang kann nicht wieder rückgängig gemacht werden! Falls es untergeordnete Objekte gibt, werden diese ebenfalls gelöscht!"}
-                </VarText>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={handleClose}>
-                    Abbrechen
-                </Button>
-                <Button variant='outline-danger' onClick={onDelete}>
-                    Löschen
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleClose}>
+                        Abbrechen
+                    </Button>
+                    <Button variant='outline-danger' onClick={onDelete}>
+                        Löschen
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            </>
+        ) : ""}
         </>
     )
 }
