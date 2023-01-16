@@ -45,29 +45,82 @@ export const ModalDelete = ({show, handleClose, onDelete, title, body, object}) 
     )
 }
 
+const set_values = (fields, type) => {
+    var tmp = {}
+
+    for (var i = 0; i < fields.length; i++) {
+        if ((fields[i].edit && type == "edit") || fields[i].create && type == "create") {
+            switch (fields[i].type) {
+                case 'checkbox':
+                case 'switch':
+                    tmp[fields[i].value] = document.getElementById(fields[i].value).checked
+                    break;
+                default:
+                    tmp[fields[i].value] = document.getElementById(fields[i].value).value
+                    break;
+            }
+        }
+    }
+    return tmp
+}
+
 const Field = ({label, type, value, name, disabled, hidden, required}) => {
     const [newValue, setValue] = useState()
+    const [checked, setChecked] = useState()
 
     useEffect(() => {
-        setValue(value)
+        switch (type) {
+            case 'checkbox':
+            case 'switch':
+                setChecked(value)
+                break;
+            default:
+                setValue(value)
+                break;
+        }
     }, [value])
 
+    const onChange = e => {
+        switch(type) {
+            case 'checkbox':
+            case 'switch':
+                setChecked(e.target.checked)
+                break;
+            default:
+                setValue(e.target.value)
+                break;
+        }
+    }
+
     return (
-        <>          
-        <FloatingLabel className='mb-3'>
-            <Form.Control 
-                value={newValue}
-                onChange={e => setValue(e.target.value)}
-                type={type || "text"}
+        <>
+        { type == "switch" || type == "checkbox" ? (
+            <Form.Check 
+                type={type}
                 id={name}
                 name={name}
+                label={label}
+                checked={checked || false}
+                onChange={onChange}
                 disabled={disabled || false}
                 hidden={hidden || false}
-                placeholder={label}
-                required={required || false}
             />
-            <Form.Label hidden={hidden || false}>{label}</Form.Label>
-        </FloatingLabel>
+        ) : (
+            <FloatingLabel className='mb-3 mt-3'>
+                <Form.Control 
+                    value={newValue}
+                    onChange={onChange}
+                    type={type || "text"}
+                    id={name}
+                    name={name}
+                    disabled={disabled || false}
+                    hidden={hidden || false}
+                    placeholder={label}
+                    required={required || false}
+                />
+                <Form.Label hidden={hidden || false}>{label}</Form.Label>
+            </FloatingLabel>
+        )}
         </>
     )
 }
@@ -77,13 +130,7 @@ export const ModalEdit = ({show, handleClose, onEdit, title, object, fields}) =>
     const onSubmit = e => {
         e.preventDefault()
 
-        var tmp = {}
-
-        for (var i = 0; i < fields.length; i++) {
-            tmp[fields[i].value] = document.getElementById(fields[i].value).value
-        }
-        
-        onEdit(tmp)
+        onEdit(set_values(fields, "edit"))
     }
 
     return (
@@ -148,16 +195,8 @@ export const ModalCreate = ({show, handleClose, onCreate, title, fields}) => {
 
     const onSubmit = e => {
         e.preventDefault()
-
-        var tmp = {}
-
-        for (var i = 0; i < fields.length; i++) {
-            if (fields[i].create) {
-                tmp[fields[i].value] = document.getElementById(fields[i].value).value
-            }
-        }
-        
-        onCreate(tmp)
+     
+        onCreate(set_values(fields, "create"))
     }
 
     return (

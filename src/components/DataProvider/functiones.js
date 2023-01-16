@@ -1,4 +1,4 @@
-export const generate_prefix = (length) =>{
+export const generate_prefix = (length) => {
     let result = ' ';
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;

@@ -8,6 +8,17 @@ export const TableButtons = (props) => {
     var user = props.user || null
 
     const get_button = (btn) => {
+        if (props.disable.includes(btn.label)) {
+            return (
+                <Button 
+                    variant="link"
+                    className={`text-${(btn.execute || !btn.variant) ? btn.color || '' : ''}`}
+                    disabled
+                >
+                    {btn.icon || <BsCommand />}
+                </Button>
+            )
+        }
         return (
             <Button 
                 variant={btn.variant || 'link'} 

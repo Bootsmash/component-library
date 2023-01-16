@@ -65,20 +65,20 @@ export const APIProvider = (props) => {
 
     props.options.buttons = []
 
-    if (api?.edit) {
+    if (api?.edit && props.options.unique) {
         props.options.buttons[props.options.buttons.length] = 
         {
             label: "edit",
-            icon: <BsPencilSquare />,
+            icon: api.edit.icon || <BsPencilSquare />,
             execute: handleShowEdit
         }
     }
 
-    if (api?.delete) {
+    if (api?.delete && props.options.unique) {
         props.options.buttons[props.options.buttons.length] = 
         {
             label: "delete",
-            icon: <BsTrash />,
+            icon: api.delete.icon || <BsTrash />,
             execute: handleShowDelete
         }
     }
@@ -261,7 +261,7 @@ export const APIProvider = (props) => {
             />
             </>
         ) :""}
-        { api?.delete ? (
+        { api?.delete && props.options.unique ? (
             <ModalDelete 
                 show={showDelete}
                 handleClose={() => setShowDelete(false)}
@@ -271,12 +271,12 @@ export const APIProvider = (props) => {
                 object={objectData}
             />
         ) : ""}
-        { api?.edit && api?.edit ? (
+        { api?.edit && api?.edit && props.options?.unique ? (
             <ModalEdit
                 show={showEdit}
                 handleClose={() => setShowEdit(false)}
                 onEdit={onEdit}
-                title={api.edit || ""}
+                title={api.edit.title || ""}
                 object={objectData}
                 fields={api.fields}
             />

@@ -1,8 +1,8 @@
 import { BsDash } from 'react-icons/bs';
 
-export const format_input = (format, input, fixes=null, suffix=null) => {
-    
-    if (input == null)
+export const format_input = (format, input, fixes=null, suffix=null, bool=null) => {
+ 
+    if (input == null && format != "bool")
         return <BsDash />
 
     switch(format) {
@@ -105,6 +105,13 @@ export const format_input = (format, input, fixes=null, suffix=null) => {
             }
 
             return output
+        
+        case 'bool':
+            if (input) {
+                return bool?.true || "true"
+            } else {
+                return bool?.false || "false"
+            }
             
         case 'none':
         default:

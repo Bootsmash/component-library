@@ -11,6 +11,7 @@ export const Container = (props) => {
     var colspan = props['colspan'] || 1
     const display = props['display'] || null
     var text = props['text'] || "dark"
+    var width = props['width'] || null
 
     const get_display = () => {
         var output = "";
@@ -40,7 +41,8 @@ export const Container = (props) => {
             output = (
                 <td 
                     className={`text-${position ? position : "end"} ${get_display()} align-middle`} 
-                    colSpan={colspan} 
+                    colSpan={colspan}
+                    width={width || null}
                 >
                     {input}
                 </td>
@@ -50,7 +52,8 @@ export const Container = (props) => {
             output = (
                 <th 
                     className={`text-${position ? position : "end"} ${get_display()} align-middle`} 
-                    colSpan={colspan} 
+                    colSpan={colspan}
+                    width={width || null}
                 >
                     {input}
                 </th>

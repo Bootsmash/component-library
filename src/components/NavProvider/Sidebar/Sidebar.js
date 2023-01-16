@@ -97,11 +97,6 @@ const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
         active = true
     }
 
-    if (!label || !icon) {
-        console.error("Nicht alle Attribute Angegeben (label, to, icon)")
-        return ("")
-    }
-
     const key = generate_prefix(10)
 
     return (
@@ -109,11 +104,11 @@ const SidebarItem = ({label, to, color, icon, disabled, hidden, execute}) => {
         <li className={`nav-item ${color === "dark" ? "" : "link-dark"} ${hidden ? 'd-none' : ''}`}>
             {execute ? (
                 <a className={`nav-link function-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`} onClick={execute || null}>
-                    {icon} {label}
+                    {icon || ""} {label}
                 </a>
             ) : (
                 <NavLink key={key} to={to} className={`nav-link ${disabled ? "disabled" : ""} ${color === "dark" ? "text-white" : active ? "text-white" : "text-black"}`}>
-                    {icon} {label}
+                    {icon || ""} {label}
                 </NavLink>
             )}
         </li>

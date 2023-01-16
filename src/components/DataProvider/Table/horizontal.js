@@ -36,7 +36,8 @@ const Horizontal = (props) => {
                 <tr>
                     { headers.map((head, h) =>
                         <>
-                        <th key={`${head_prefix}-${head.label}`} 
+                        <th key={`${head_prefix}-${head.label}`}
+                            size={head.size} 
                             className={`text-${head.pos || 'start'} ${get_display(head.display || null, 'col')} align-middle`}
                         >   
                             {get_icon(head.icon || null, 'start')} {head.label} {get_icon(head.icon || null, 'end')}
@@ -51,7 +52,15 @@ const Horizontal = (props) => {
                     <>
                     { data.map((item, d) =>
                         <>
-                        <tr key={`${body_prefix}-${item[0]}`} data-id={ options?.unique ? get_value(options.unique, item) : "" }>
+                        <tr 
+                            key={`${body_prefix}-${item[0]}`}
+                            data-id={ options?.unique ? get_value(options.unique, item) : "" }
+                            className={
+                                options.highlight.value == get_value(options.unique, item) ? (
+                                    options.highlight.class || ""
+                                ) : ""
+                            }
+                        >
                             { headers.map((head, h) =>
                                 <>
                                 <FormatProvider 
@@ -62,11 +71,22 @@ const Horizontal = (props) => {
                                     display={head.display || null}
                                     fixes={head.fixes || null}
                                     suffix={head.suffix || null}
+                                    bool={head.bool || null}
+                                    width={head.width}
                                 />
                                 </>
                             )}
                             { options && options.buttons ? (
-                                <TableButtons buttons={options.buttons} ct="tbody" user={user|| null}/>
+                                <TableButtons 
+                                    buttons={options.buttons}
+                                    ct="tbody"
+                                    user={user|| null}
+                                    disable={
+                                        options.disable.value == get_value(options.unique, item) ? (
+                                            options.disable.buttons || null
+                                        ) : ""
+                                    }
+                                />
                             ) : ""}
                         </tr>
                         { subtable ? (
