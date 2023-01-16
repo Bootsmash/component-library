@@ -56,8 +56,8 @@ const Horizontal = (props) => {
                             key={`${body_prefix}-${item[0]}`}
                             data-id={ options?.unique ? get_value(options.unique, item) : "" }
                             className={
-                                options.highlight.value == get_value(options.unique, item) ? (
-                                    options.highlight.class || ""
+                                options?.highlight?.value == get_value(options.unique, item) ? (
+                                    options.highlight?.class || ""
                                 ) : ""
                             }
                         >
@@ -82,8 +82,8 @@ const Horizontal = (props) => {
                                     ct="tbody"
                                     user={user|| null}
                                     disable={
-                                        options.disable.value == get_value(options.unique, item) ? (
-                                            options.disable.buttons || null
+                                        options?.disable?.value == get_value(options.unique, item) ? (
+                                            options.disable?.buttons || null
                                         ) : ""
                                     }
                                 />
