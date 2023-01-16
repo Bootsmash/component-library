@@ -62,7 +62,7 @@ const Field = ({label, type, value, name, disabled, hidden, required}) => {
                 placeholder={label}
                 required={required || false}
             />
-            <Form.Label>{label}</Form.Label>
+            <Form.Label hidden={hidden || false}>{label}</Form.Label>
         </FloatingLabel>
         </>
     )

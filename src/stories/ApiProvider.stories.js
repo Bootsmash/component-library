@@ -12,7 +12,7 @@ export default {
 
 import { default_fixes } from '../components'
 
-const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjczOTU1NjgyLCJpYXQiOjE2NzM4NjkyODIsImp0aSI6ImU3NmNkZjc1NTRiNjQwNDQ5MTE3MjRiMDcyOGRiYTJkIiwidXNlcl91dWlkIjoiNDc0M2ZkZGMtMDIyOS00NWE3LTg2YmEtMzBhODBhMzUyOWQwIn0.Glg9yxRmgKZChnlAq7WjnikhkGLWVBicF-VhDXRihjg"
+const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjczOTU3MzkwLCJpYXQiOjE2NzM4NzA5OTAsImp0aSI6IjVkNzVlODEzZTRhODQzOTg4NWRhNDg5OTUzMjJjMmE2IiwidXNlcl91dWlkIjoiOTQ0Yjk5NjQtY2Q4Mi00MTMxLWJmYTItMjM5YjZlYzEwOGMyIn0.QYymPrAoE9J8y86Rs3_gE9TbUfrnbdHt_BT3LPJTjOM"
 
 const Template = (args) => <APIProvider {...args} />;
 
