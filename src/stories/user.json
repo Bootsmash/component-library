@@ -14,5 +14,6 @@
     "date_joined": "2022-12-23T22:15:28.915332+01:00",
     "groups": [],
     "user_permissions": [],
-    "uuid": "dc169934-9186-4b41-ad6c-b02224c619de"
+    "uuid": "dc169934-9186-4b41-ad6c-b02224c619de",
+    "default_img": "https://ui-avatars.com/api/?background=random&rounded=True&size=128&format=svg&name=Bennet+Schmidt"
 }

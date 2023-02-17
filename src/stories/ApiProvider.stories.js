@@ -33,8 +33,13 @@ ApiProvider.args = {
         bg: '',
         size: "sm",
         unique: "uuid",
-        highlight: {value: "8ead9430-85cc-4985-b180-eeb35f09a465", class: "table-success"},
-        disable: {value: "8ead9430-85cc-4985-b180-eeb35f09a465", buttons: ["edit", "delete"]},
+        highlight: [
+            {values: [true], key: "is_superuser", class: "table-warning"},
+            {values: [true], key: "is_staff", class: "table-danger"},
+        ],
+        disable: [
+            {values: [true], key:"is_superuser", buttons: ["edit", "delete"]},
+        ],
         api: {
             url: "http://127.0.0.1:8000/api/account/accounts/",
             access: access,

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const generate_prefix = (length) => {
     let result = ' ';
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

@@ -33,8 +33,8 @@ export const Sidebar = ({color, headers, title, usermenu, user}) => {
                 <hr />
                 {usermenu && user ? (
                    <div className="dropdown usermenu">
-                        <a className={`d-flex align-items-center function-link text-center ${color === "dark" ? "text-white" : "text-black"} text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src={`${user.image || 'https://github.com/mdo.png'}`} alt="" width="32" height="32" className="rounded-circle me-2" />
+                        <a className={`d-flex align-items-center function-link text-center ${color === "dark" ? "text-white" : "text-black"} text-decoration-none dropdown-toggle ms-2`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src={`${user.default_img || user.image || 'https://github.com/mdo.png'}`} alt="" width="32" height="32" className="rounded-circle me-2" />
                             <strong>{user?.username || ""}</strong>
                         </a>
                         <ul className={`dropdown-menu dropdown-menu-${color} text-small shadow`} aria-labelledby="dropdownUser1">

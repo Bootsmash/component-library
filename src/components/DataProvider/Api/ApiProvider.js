@@ -65,6 +65,7 @@ export const APIProvider = (props) => {
 
     props.options.buttons = []
 
+    // Add Edit Button to DataProvider
     if (api?.edit && props.options.unique) {
         props.options.buttons[props.options.buttons.length] = 
         {
@@ -74,6 +75,7 @@ export const APIProvider = (props) => {
         }
     }
 
+    // Add delete Button to DataProvider
     if (api?.delete && props.options.unique) {
         props.options.buttons[props.options.buttons.length] = 
         {
@@ -83,6 +85,15 @@ export const APIProvider = (props) => {
         }
     }
 
+    // Add other Buttons to DataProvider
+    if (api?.buttons && props.options.unique) {
+        var def = props.options.buttons.length + 1
+        for(var i = 0; i < api.buttons.length; i++) {
+            props.options.buttons[def + i] = api.buttons[i]
+        }
+    }
+
+    // Add load more Button to DataProvider
     if (api?.loadMore) {
         props.options.load = {
             label: (api.loadMore.label || ""),
@@ -94,6 +105,7 @@ export const APIProvider = (props) => {
         props.options.load = false
     }
 
+    // Add create Button to DataProvider
     if (api?.create) {
         props.options.create = {
             label: (api.create || ""),
@@ -103,6 +115,7 @@ export const APIProvider = (props) => {
         props.options.create = false
     }
 
+    // Delete Function
     const onDelete = async e => {
         if (object_id) {
             try {
@@ -121,6 +134,7 @@ export const APIProvider = (props) => {
         }
     }
 
+    // Edit Function
     const onEdit = async (editFormData) => {
         try {
             const body = editFormData
@@ -133,6 +147,7 @@ export const APIProvider = (props) => {
         }
     }
 
+    // Create Function
     const onCreate = async (createFormData) => {
         try {
             const body = createFormData
@@ -158,7 +173,8 @@ export const APIProvider = (props) => {
             console.log(err.message)
         }
     }
-        
+    
+    // Collect Objects from API
     const getObjects = async (page_number, page_size) => {
         url = raw_url + `?page=${page_number || page}&page_size=${page_size || pagesize || '10'}&ordering=${api.order || ''}&`
         if (search) {

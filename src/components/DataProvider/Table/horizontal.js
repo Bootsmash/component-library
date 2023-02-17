@@ -6,6 +6,33 @@ import { FormatProvider } from '../../FormatProvider/index';
 import { TableButtons } from './buttons';
 import { BsPlusLg } from 'react-icons/bs';
 import { default as TableVertical } from './vertical';
+import { get_dataid } from '../../functiones';
+
+export const get_highlights = (options, item, type, label=null) => {
+    if (options?.highlight && type == "highlight") {
+        let highlight = options.highlight
+        for (var h = 0; h < highlight.length; h++) {
+            if (highlight[h].values.includes(get_value((highlight[h].key || options.unique), item))) {
+                return (highlight[h].class || "")
+            }
+            return false
+        }
+    } else if (options?.disable && type == "disable" && label) {
+        let disable = options.disable
+        for (var d = 0; d < options.disable.length; d++) {
+            let disable = options.disable[d]
+            if (disable?.buttons.includes(label)) {
+                if (disable.values.includes(get_value((disable.key || options.unique), item))) {
+                    return true
+                }
+            }
+            return false
+        }
+    } else {
+        return false
+    }
+}
+
 
 const Horizontal = (props) => {
 
@@ -55,11 +82,7 @@ const Horizontal = (props) => {
                         <tr 
                             key={`${body_prefix}-${item[0]}`}
                             data-id={ options?.unique ? get_value(options.unique, item) : "" }
-                            className={
-                                options?.highlight?.value == get_value(options.unique, item) ? (
-                                    options.highlight?.class || ""
-                                ) : ""
-                            }
+                            className={get_highlights(options, item, "highlight")}
                         >
                             { headers.map((head, h) =>
                                 <>
@@ -73,6 +96,7 @@ const Horizontal = (props) => {
                                     suffix={head.suffix || null}
                                     bool={head.bool || null}
                                     width={head.width}
+                                    img_size={head.format == 'image' ? head.size : null}
                                 />
                                 </>
                             )}
@@ -81,11 +105,8 @@ const Horizontal = (props) => {
                                     buttons={options.buttons}
                                     ct="tbody"
                                     user={user|| null}
-                                    disable={
-                                        options?.disable?.value == get_value(options.unique, item) ? (
-                                            options.disable?.buttons || null
-                                        ) : ""
-                                    }
+                                    options={props.options}
+                                    item={item}
                                 />
                             ) : ""}
                         </tr>

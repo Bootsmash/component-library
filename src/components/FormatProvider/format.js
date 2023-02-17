@@ -1,6 +1,7 @@
+import React from 'react';
 import { BsDash } from 'react-icons/bs';
 
-export const format_input = (format, input, fixes=null, suffix=null, bool=null) => {
+export const format_input = (format, input, fixes=null, suffix=null, bool=null, img_size=null) => {
  
     if (input == null && format != "bool")
         return <BsDash />
@@ -112,7 +113,10 @@ export const format_input = (format, input, fixes=null, suffix=null, bool=null) 
             } else {
                 return bool?.false || "false"
             }
-            
+        
+        case 'image':
+            return <img src={input} width={img_size} height={img_size}/>
+
         case 'none':
         default:
             return input

@@ -7,7 +7,7 @@ export const FormatProvider = (props) => {
     // set input and format const
     const format = props['format'] || "none"
     const data = props['value'] || props.children || null
-    const formatted = format_input(format, data, props['fixes'] || null, props['suffix'] || null, props['bool'] || null)
+    const formatted = format_input(format, data, props['fixes'] || null, props['suffix'] || null, props['bool'] || null, props['img_size'] || null)
 
     // initialize Variables
     var container = props['ct'] || ""
