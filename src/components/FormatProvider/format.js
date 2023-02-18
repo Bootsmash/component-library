@@ -32,8 +32,62 @@ export const format_input = (format, input, fixes=null, suffix=null, bool=null, 
             }
 
             return output
+
+        case 'future-to-now':
+            var old = new Date(input)
+            var now = new Date();
+
+            var diff = old.getTime() - now.getTime()
+
+            var diff_days = diff / (1000 * 60 * 60 * 24)
+
+            if (Math.round(diff_days) < 1 && (fixes?.hours || fixes?.minutes || fixes?.now_future)){
+
+                var diff_hours = diff / (1000 * 60 * 60)
+                if (diff_hours < 24 && (fixes?.hours || fixes?.minutes || fixes?.now_future)) {
+
+                    var diff_minutes = diff / (1000 * 60)
+
+                    if (diff_minutes < 1 && fixes?.now_future) {
+                        return fixes.now_future
+
+                    } else if(diff_minutes < 60 && fixes?.minutes) {
+                        return (fixes?.default_future + " " || "") + Math.round(diff_minutes) + " " + fixes.minutes
+
+                    } else if (diff_hours < 2 && (fixes?.hour || fixes?.hours)) {
+                        return (fixes.default_future + " " || "") + Math.round(diff_hours) + " " + (fixes.hour || fixes.hours)
+                    } else if (fixes?.hours) {
+                        return (fixes?.default_future + " "|| "") + Math.round(diff_hours) + " " + fixes.hours
+                    }
+                }
+            } else if (diff_days < 2 && fixes?.day_past) {
+                return fixes.day_past
+
+            } else if (diff_days < 7 && (fixes?.days)) {
+                return (fixes?.default_future + " " || "") + Math.round(diff_days) + " " + fixes.days
+            }
+
+            var diff_weeks = diff_days / 7
+            var diff_months = diff_weeks / 4
+
+            if (diff_weeks < 2 && (fixes?.week || fixes?.weeks)) {
+                return (fixes?.default_future + " " || "") + Math.round(diff_days / 7) + " " + (fixes.week || fixes.weeks)
+
+            } else if (diff_weeks < 4 && fixes?.weeks) {
+                return (fixes?.default_future + " " || "") + Math.round(diff_days / 7) + " " + fixes.weeks
+            }
+
+            if (diff_months < 12 && fixes?.months) {
+                return (fixes?.default_future + " " || "") + Math.round(diff_days / 7 / 4) + " " + fixes.months
+            }
+            
+            return (fixes?.finish ? fixes.finish + " " : "") + new Intl.DateTimeFormat('de-DE', {
+                year: 'numeric', 
+                month: '2-digit',
+                day: '2-digit'
+            }).format(new Date(input));
         
-        case 'date-to-now':
+        case 'past-to-now':
             var old = new Date(input)
             var now = new Date();
 
@@ -52,26 +106,33 @@ export const format_input = (format, input, fixes=null, suffix=null, bool=null, 
                         return fixes.now
 
                     } else if(diff_minutes < 60 && fixes?.minutes) {
-                        return (fixes?.default + " " || "") + Math.round(diff_minutes) + " " + fixes.minutes
+                        return (fixes?.default_past + " " || "") + Math.round(diff_minutes) + " " + fixes.minutes
 
                     } else if (diff_hours < 2 && (fixes?.hour || fixes?.hours)) {
-                        return (fixes.default + " " || "") + Math.round(diff_hours) + " " + (fixes.hour || fixes.hours)
+                        return (fixes.default_past + " " || "") + Math.round(diff_hours) + " " + (fixes.hour || fixes.hours)
                     } else if (fixes?.hours) {
-                        return (fixes?.default + " "|| "") + Math.round(diff_hours) + " " + fixes.hours
+                        return (fixes?.default_past + " "|| "") + Math.round(diff_hours) + " " + fixes.hours
                     }
                 }
-            } else if (diff_days < 2 && fixes?.day) {
-                return fixes.day
+            } else if (diff_days < 2 && fixes?.day_past) {
+                return fixes.day_past
 
             } else if (diff_days < 7 && (fixes?.days)) {
-                return (fixes?.default + " " || "") + Math.round(diff_days) + " " + fixes.days
+                return (fixes?.default_past + " " || "") + Math.round(diff_days) + " " + fixes.days
             }
 
-            if (diff_days < 14 && (fixes?.week || fixes?.weeks)) {
-                return (fixes?.default + " " || "") + Math.round(diff_days / 7) + " " + (fixes.week || fixes.weeks)
+            var diff_weeks = diff_days / 7
+            var diff_months = diff_weeks / 4
 
-            } else if (diff_days < 28 && fixes?.weeks) {
-                return (fixes?.default + " " || "") + Math.round(diff_days / 7) + " " + fixes.weeks
+            if (diff_weeks < 2 && (fixes?.week || fixes?.weeks)) {
+                return (fixes?.default_past + " " || "") + Math.round(diff_days / 7) + " " + (fixes.week || fixes.weeks)
+
+            } else if (diff_weeks < 4 && fixes?.weeks) {
+                return (fixes?.default_past + " " || "") + Math.round(diff_days / 7) + " " + fixes.weeks
+            }
+
+            if (diff_months < 12 && fixes?.months) {
+                return (fixes?.default_past + " " || "") + Math.round(diff_days / 7 / 4) + " " + fixes.months
             }
             
             return (fixes?.finish ? fixes.finish + " " : "") + new Intl.DateTimeFormat('de-DE', {
@@ -79,6 +140,7 @@ export const format_input = (format, input, fixes=null, suffix=null, bool=null, 
                 month: '2-digit',
                 day: '2-digit'
             }).format(new Date(input));
+            
         
         case 'number':
             // Format Input as Number

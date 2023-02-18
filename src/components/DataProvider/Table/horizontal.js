@@ -113,7 +113,7 @@ const Horizontal = (props) => {
                                     suffix={head.suffix || null}
                                     bool={head.bool || null}
                                     width={head.width}
-                                    img_size={head.format == 'image' ? head.size : null}
+                                    img_size={head.width || null}
                                 />
                                 </>
                             )}

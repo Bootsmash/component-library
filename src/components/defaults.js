@@ -1,15 +1,19 @@
 export const default_fixes = () => {
     const fixes = {
         now: "jetzt",
-        default: "Vor",
+        now_future: "heute",
+        default_past: "Vor",
+        default_future: "In",
         finish: "Am",
         minutes: "Minuten",
         hour: "Stunde",
         hours: "Stunden",
-        day: "gestern",
+        day_past: "gestern",
+        day_future: "morgen",
         days: "Tagen",
         week: "Woche",
-        weeks: "Wochen"
+        weeks: "Wochen",
+        months: "Monaten",
     }
     return JSON.stringify(fixes)
 }
