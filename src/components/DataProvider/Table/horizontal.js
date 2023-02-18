@@ -33,6 +33,19 @@ export const get_highlights = (options, item, type, label=null) => {
     }
 }
 
+const onExpandSubtable = e => {
+    var identifier = get_dataid(e)
+    var row = document.getElementById('subtable-' + identifier)
+
+    if (row.classList.contains('d-none')) {
+        row.classList.remove('d-none')
+        row.classList.add('d-table-row')
+    } else {
+        row.classList.add('d-none')
+        row.classList.remove('d-table-row')
+    }
+}
+
 
 const Horizontal = (props) => {
 
@@ -47,6 +60,11 @@ const Horizontal = (props) => {
 
 
     var caption = options.caption || props['caption'] || null
+
+    if (options?.subtable && options?.subtable?.button) {
+        options.subtable.button['execute'] = onExpandSubtable
+        options.buttons[options.buttons.length + 1] = options.subtable.button
+    }
 
     return (
         <Table 
@@ -110,10 +128,10 @@ const Horizontal = (props) => {
                                 />
                             ) : ""}
                         </tr>
-                        { subtable ? (
-                            <tr>
+                        { options?.subtable && options?.unique ? (
+                            <tr id={"subtable-" + get_value(options.unique, item)} className="d-none">
                                 <td colSpan={get_colspan(headers, options.buttons)}>
-                                    <TableVertical headers={subtable.headers} options={subtable.options || null}>{item}</TableVertical>
+                                    <TableVertical headers={options?.subtable.headers} options={options?.subtable.options || null}>{item}</TableVertical>
                                 </td>
                             </tr>
                         ) : ""}
@@ -140,6 +158,7 @@ const Horizontal = (props) => {
                                         colspan={head.colspan}
                                         display={head.display || null}
                                         fixes={head.fixes || null}
+                                        suffix={head.suffix || null}
                                     />
                                 ) : (
                                     <td className={get_display(head?.display, 'col')}></td>

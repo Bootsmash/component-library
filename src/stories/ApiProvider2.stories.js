@@ -22,8 +22,17 @@ export const ApiProvider2 = Template.bind({});
 ApiProvider2.args = {
     options: {
         headers: [
-            {label: 'Name', value: 'name', pos: 'start', sum: true},
-            {label: '', value: 'default_img', format: 'image', pos: 'start', sum: 'count', size: 40},
+            {label: '', value: 'default_img', format: 'image', size: 40, pos: 'center', width: 40},
+            {label: 'Name', value: 'name', pos: 'start'},
+            {label: 'Benutzername', value: 'username', pos: 'start'},
+            {label: 'Passwort', value: 'password', pos: 'start'},
+            {label: 'Erstellt am', value: 'created_at', format: 'date', pos: 'end', width: 125},
+            {label: 'Bearbeitet am', value: 'edited_at', format: 'date', pos: 'end', width: 125},
+            {label: 'Zahlungs-Abstand', value: 'pay_sequence', pos: 'end', width: 140},
+            {label: 'Zahlungs-Rythmus', value: 'pay_reccuring', pos: 'end', width: 150},
+            {label: 'Benutzer', value: 'clients_count+clients_max', space: ' / ', pos: 'center', width: 10},
+            {label: 'Kosten (Nuter)', value: 'price_client', format: 'number', suffix: '€', pos: 'end', width: 115},
+            {label: 'Kosten (Ges)', value: 'price_host.amount', format: 'number', suffix: '€', pos: 'end', width: 100, sum: 'sum'},
         ],
         hover: true,
         striped: false,
@@ -36,7 +45,7 @@ ApiProvider2.args = {
             variant: 'success'
         },
         api: {
-            url: "http://127.0.0.1:8000/api/services/all/",
+            url: "http://127.0.0.1:8000/api/services/host/services/",
             access: access,
             order: "-name",
             caption: true,
@@ -49,6 +58,23 @@ ApiProvider2.args = {
                 {label: 'test', tooltip: {pos: 'top', desc: 'Test Button'}, execute: onTest},
             ],
             refresh: false, // Seconds
+        },
+        subtable: {
+            headers: [
+                {label: 'UUID', value: 'uuid'},
+                {label: 'Name', value: 'name'},
+                {label: 'Benutzername', value: 'username'},
+                {label: 'Passwort', value: 'password'},
+            ],
+            options: {
+                size: 'sm',
+                bg: 'success',
+                hover: true
+            },
+            button: {
+                lable: "test",
+                tooltip: {pos: 'top', desc: 'Mehr'},
+            }
         }
     },
     variant: 'table-horizontal',

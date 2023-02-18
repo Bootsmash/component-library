@@ -1,10 +1,12 @@
+import { get_value } from "../functiones";
+
 export const get_sum = (data, header) => {
     var output = 0;
 
     switch (header.sum) {
         case 'sum':
             for (var i = 0; i < data.length; i++) {
-                output += data[header.value] || 0
+                output += get_value(header.value, data[i]) || 0
             }
             break;
         case 'count':
