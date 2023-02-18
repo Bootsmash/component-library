@@ -51,7 +51,6 @@ const Horizontal = (props) => {
 
     var data = props.children;
     const headers = props['headers'];
-    var subtable = props['subtable'] || null;
     var options = props['options'] || [];
     var user = props.user || null;
 
@@ -63,7 +62,7 @@ const Horizontal = (props) => {
 
     if (options?.subtable && options?.subtable?.button) {
         options.subtable.button['execute'] = onExpandSubtable
-        options.buttons[options.buttons.length + 1] = options.subtable.button
+        options.buttons[options.buttons.length] = options.subtable.button
     }
 
     return (

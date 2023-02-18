@@ -84,9 +84,7 @@ export const TableButtons = (props) => {
                         <>
                         {!btn?.permissions || ( user && has_permission(user, btn.permissions)) ? (
                             <>
-                            <td>
-                                { button(btn) }
-                            </td>
+                            { button(btn) }
                             </>
                         ) : ""}
                         </>

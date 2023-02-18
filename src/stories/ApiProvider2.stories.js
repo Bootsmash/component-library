@@ -54,17 +54,11 @@ ApiProvider2.args = {
                 label: "Suche ...",
                 pos: "center"
             },
-            buttons: [
-                {label: 'test', tooltip: {pos: 'top', desc: 'Test Button'}, execute: onTest},
-            ],
             refresh: false, // Seconds
         },
         subtable: {
             headers: [
-                {label: 'UUID', value: 'uuid'},
-                {label: 'Name', value: 'name'},
-                {label: 'Benutzername', value: 'username'},
-                {label: 'Passwort', value: 'password'},
+                {label: 'Benutzer', value: 'uuid'},
             ],
             options: {
                 size: 'sm',
@@ -72,7 +66,6 @@ ApiProvider2.args = {
                 hover: true
             },
             button: {
-                lable: "test",
                 tooltip: {pos: 'top', desc: 'Mehr'},
             }
         }
